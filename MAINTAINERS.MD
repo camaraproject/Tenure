@@ -7,5 +7,4 @@
 | Telefonica | Clara Serrano | claraserranosolsona |
 | Telefonica | Jorge García | jgarciahospital |
 | Vodafone | Ali Gilani | ag-vodafone |
-| Vodafone | Eric Murray | eric-murray |
 | Vodafone | Luis Lopez Corpas | luislopezcorpas |
