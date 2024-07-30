@@ -10,17 +10,15 @@
 Repository to describe, develop, document, and test the Tenure API within the KnowYourCustomer (KYC) API family.
 
 ## Scope
-* Service API(s) for “Tenure” (see APIBacklog.md)
+* Service API(s) for “Tenure” (see [APIBacklog.md](https://github.com/camaraproject/APIBacklog/blob/main/documentation/APIbacklog.md))
 * It provides the customer with the ability to:  
-  * (Please update with the scope of the API)
-  <!-- delete the following line if the scope of the API is defined differently in APIBacklog -->
-  * NOTE: The scope of this API family should be limited (at least at the first stage) to 4G and 5G.  
+  * Establish a level of trust for a given network subcription identifier (e.g. MSISDN) by verifying the period of time (i.e. "tenure") for which the end user currently allocated that identifier has been associated with it by their current network operator.
 * Describe, develop, document, and test the APIs
 * Started: May 2024
 
 ## Release Information
 <!-- Use/uncomment one or multiple the following options -->
-The sub project has no (pre)releases yet, work in progress is within the main branch.
+The sub project has no (pre-)releases yet, work in progress is within the main branch.
 <!-- Pre-releases of this sub project are available in https://github.com/camaraproject/Tenure/releases -->
 <!-- The latest public release is available here: https://github.com/camaraproject/Tenure/releases/latest -->
 <!-- For changes see [CHANGELOG.md](https://github.com/camaraproject/Tenure/blob/main/CHANGELOG.md) -->
