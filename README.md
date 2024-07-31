@@ -12,7 +12,7 @@ Repository to describe, develop, document, and test the Tenure API within the Kn
 ## Scope
 * Service API(s) for “Tenure” (see [APIBacklog.md](https://github.com/camaraproject/APIBacklog/blob/main/documentation/APIbacklog.md))
 * It provides the customer with the ability to:  
-  * Establish a level of trust for a given network subcription identifier (e.g. MSISDN) by verifying the period of time (i.e. "tenure") for which the end user currently allocated that identifier has been associated with it by their current network operator.
+  * Establish a level of trust for a given network subcription identifier (e.g. phone number) by verifying the period of time (i.e. "tenure") for which the end user currently allocated that identifier has been associated with it by their current network operator.
 * Describe, develop, document, and test the APIs
 * Started: May 2024
 
