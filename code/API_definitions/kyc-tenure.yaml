@@ -31,7 +31,7 @@ info:
     - `phoneNumber`: The network subscription identifier (i.e. the phone number of the subscriber). This field is only required if no network subscription identifier is associated with the access token.
 
     ## Outputs
-   
+
     If successful, a JSON object is returned containing the following data:
     - `tenureDateCheck`: `true` when the identified network subscription has had valid tenure since `tenureDate`, otherwise `false`
     - `contractType`: The network subscription account type, if known
