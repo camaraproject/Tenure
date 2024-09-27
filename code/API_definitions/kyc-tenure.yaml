@@ -3,7 +3,7 @@ info:
   title: CAMARA KYC Tenure
   description: |
     # Summary
-    
+
     The CAMARA Know Your Customer (KYC) Tenure API allows for verification that a network subscriber has been a customer of the Communications Service Provider (CSP) for a specified minimum length of time so as to establish a level of trust for the associated network subscription identifier.
 
     # Authorization and authentication
@@ -25,7 +25,7 @@ info:
     To call this endpoint, the API consumer must first obtain a valid access token with the specified scope from the specified token endpoint, which is then passed to the endpoint via the `Authorization` header. For more details on access token processing, see below.
 
     ## Inputs
- 
+
     The endpoint request body is a JSON object with the following parameters:
     - `tenureDate`: The date from which continuous tenure of the identified network subscriber is required to be confirmed. This field is always required.
     - `phoneNumber`: The network subscription identifier (i.e. the phone number of the subscriber). This field is only required if no network subscription identifier is associated with the access token.
@@ -51,11 +51,11 @@ info:
     If the API call contain a formatting or other error, a `400 INVALID_ARGUMENT` error is returned.
 
     If the network subscription cannot be identified from the provided parameters (e.g. the subscription identifier is not associated with any customer of the CSP), a `404 DEVICE_NOT_FOUND` error is returned.
- 
+
     If the API consumer has a valid access token but is not authorised to obtain tenure information for the specified network subscription, then a `403 PERMISSION_DENIED` error is returned.
 
     Other errors may be returned as specified below.
- 
+
     # Identifying a device from the access token
 
     This specification defines the `phoneNumber` field as optional in API requests, specifically in cases where the API is accessed using a 3-legged access token, and the device can be uniquely identified by the token. This approach simplifies API usage for API consumers by relying on the device information associated with the access token used to invoke the API.
@@ -110,7 +110,7 @@ paths:
   /check-tenure:
     post:
       tags:
-        -  Check Subscriber Tenure
+        - Check Subscriber Tenure
       summary: The KYC Tenure service API
       description: |
         Verifies a specified minimum length of tenure for a network subscriber to establish a level of trust for the network subscription identifier.
@@ -142,30 +142,30 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/TenureInfo"
-      
-        "400" :
+
+        "400":
           $ref: '#/components/responses/Generic400'
-        "401" :
+        "401":
           $ref: '#/components/responses/Generic401'
-        "403" :
+        "403":
           $ref: '#/components/responses/Generic403'
-        "404" :
+        "404":
           $ref: '#/components/responses/Generic404'
-        "405" :
+        "405":
           $ref: '#/components/responses/Generic405'
-        "406" :
+        "406":
           $ref: '#/components/responses/Generic406'
-        "415" :
+        "415":
           $ref: '#/components/responses/Generic415'
-        "422" :
+        "422":
           $ref: '#/components/responses/Generic422'
-        "429" :
+        "429":
           $ref: '#/components/responses/Generic429'
-        "500" :
+        "500":
           $ref: '#/components/responses/Generic500'
-        "503" :
+        "503":
           $ref: '#/components/responses/Generic503'
-        "504" :
+        "504":
           $ref: '#/components/responses/Generic504'
 
 components:
@@ -181,9 +181,9 @@ components:
       required: false
       schema:
         type: string
-        
+
   responses:
-    Generic400 :
+    Generic400:
       description: Bad Request
       headers:
         x-correlator:
@@ -431,11 +431,11 @@ components:
 
   schemas:
     TenureDate:
-      description: Specifies date from which continuous tenure of the identified mobile subscriber is required to be confirmed 
+      description: Specifies date from which continuous tenure of the identified mobile subscriber is required to be confirmed
       type: object
       properties:
         phoneNumber:
-           $ref: "#/components/schemas/PhoneNumber"
+          $ref: "#/components/schemas/PhoneNumber"
         tenureDate:
           type: string
           format: date-time
@@ -448,7 +448,7 @@ components:
       type: string
       pattern: '^\+[1-9][0-9]{4,14}$'
       example: "+123456789"
-      
+
     TenureInfo:
       properties:
         tenureDateCheck:
