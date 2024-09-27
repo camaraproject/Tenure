@@ -151,8 +151,6 @@ paths:
           $ref: '#/components/responses/Generic403'
         "404":
           $ref: '#/components/responses/Generic404'
-        "405":
-          $ref: '#/components/responses/Generic405'
         "406":
           $ref: '#/components/responses/Generic406'
         "415":
