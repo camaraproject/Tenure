@@ -266,12 +266,12 @@ components:
                 status: 404
                 code: NOT_FOUND
                 message: The specified resource is not found.
-            GENERIC_404_DEVICE_NOT_FOUND:
-              description: Device identifier not found
+            GENERIC_404_IDENTIFIER_NOT_FOUND:
+              description: The phone number is not associated with a CSP customer account
               value:
                 status: 404
-                code: DEVICE_NOT_FOUND
-                message: Device identifier not found.
+                code: IDENTIFIER_NOT_FOUND
+                message: The phone number provided is not associated with a customer account
 
     Generic406:
       description: Not Acceptable
@@ -318,17 +318,23 @@ components:
             $ref: "#/components/schemas/ErrorInfo"
           examples:
             GENERIC_422_NOT_SUPPORTED:
-              description: Service is not available for the provided device
+              description: Service is not applicable for the provided phone number
               value:
                 status: 422
-                code: NOT_SUPPORTED
-                message: Service not supported for this phoneNumber
-            GENERIC_422_UNIDENTIFIABLE_PHONE_NUMBER:
-              description: No identifier provided for any device
+                code: SERVICE_NOT_APPLICABLE
+                message: The service is not applicable for the provided phone number
+            GENERIC_422_MISSING_IDENTIFIER:
+              description: No phone number has been provided either explicitly or associated with the access token
               value:
                 status: 422
-                code: UNIDENTIFIABLE_PHONE_NUMBER
-                message: The phone number cannot be identified
+                code:  MISSING_IDENTIFIER
+                message: No phone number has been provided
+            GENERIC_422_UNNECESSARY_IDENTIFIER:
+              description: An explicit phone number has been provided when one is already associated with the access token
+              value:
+                status: 422
+                code:  UNNECESSARY_IDENTIFIER
+                message: An explicit phone number has been provided when one is already associated with the access token
 
     Generic429:
       description: Too Many Requests
