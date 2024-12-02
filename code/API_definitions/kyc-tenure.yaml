@@ -317,7 +317,7 @@ components:
           schema:
             $ref: "#/components/schemas/ErrorInfo"
           examples:
-            GENERIC_422_NOT_SUPPORTED:
+            GENERIC_422_SERVICE_NOT_APPLICABLE:
               description: Service is not applicable for the provided phone number
               value:
                 status: 422
