@@ -46,39 +46,31 @@ info:
 
     ## Errors
 
-    If the authentication token is not valid, a `401 UNAUTHENTICATED` error is returned
+    If the authentication token is missing or not a valid token, a `401 UNAUTHENTICATED` error is returned
+
+    If the authentication token is no longer valid, a `401 AUTHENTICATION_REQUIRED` error is returned
 
     If the API call contain a formatting or other error, a `400 INVALID_ARGUMENT` error is returned.
 
-    If the network subscription cannot be identified from the provided parameters (e.g. the subscription identifier is not associated with any customer of the CSP), a `404 DEVICE_NOT_FOUND` error is returned.
+    If the network subscription cannot be identified from the provided parameters (e.g. the subscription identifier is not associated with any customer of the CSP), a `404 IDENTIFIER_NOT_FOUND` error is returned.
 
     If the API consumer has a valid access token but is not authorised to obtain tenure information for the specified network subscription, then a `403 PERMISSION_DENIED` error is returned.
 
-    Other errors may be returned as specified below.
+    Other errors may be returned as specified in the example responses below.
 
-    # Identifying a device from the access token
+    # Identifying the phone number from the access token
 
-    This specification defines the `phoneNumber` field as optional in API requests, specifically in cases where the API is accessed using a 3-legged access token, and the device can be uniquely identified by the token. This approach simplifies API usage for API consumers by relying on the device information associated with the access token used to invoke the API.
+    This API requires the API consumer to identify a phone number as the subject of the API as follows:
+    - When the API is invoked using a two-legged access token, the subject will be identified from the optional `phoneNumber` field, which therefore MUST be provided.
 
-    ## Handling of device information:
+    - When a three-legged access token is used however, this optional identifier MUST NOT be provided, as the subject will be uniquely identified from the access token.
 
-    ### Optional phoneNumber for 3-legged tokens:
+    This approach simplifies API usage for API consumers using a three-legged access token to invoke the API by relying on the information that is associated with the access token and was identified during the authentication process.
 
-    - When using a 3-legged access token, the device associated with the access token must be considered as the device for the API request. This means that the phoneNumber is not required in the request, and if included it must identify the same device, therefore **it is recommended NOT to include it in these scenarios** to simplify the API usage and avoid additional validations.
+    ## Error handling:
+    - If the subject cannot be identified from the access token and the optional `phoneNumber` field is not included in the request, then the server will return an error with the `422 MISSING_IDENTIFIER` error code.
 
-    ### Validation mechanism:
-
-    - The server will extract the device identification from the access token, if available.
-    - If the API request additionally includes a `phoneNumber` parameter when using a 3-legged access token, the API will validate that the device identifier provided matches the one associated with the access token.
-    - If there is a mismatch, the API will respond with a `403 INVALID_TOKEN_CONTEXT` error, indicating that the device information in the request does not match the token.
-
-    ### Error handling for unidentifiable devices:
-
-    - If the `phoneNumber` parameter is not included in the request and the device information cannot be derived from the 3-legged access token, the server will return a `422 UNIDENTIFIABLE_DEVICE` error.
-
-    ### Restrictions for tokens without an associated authenticated identifier:
-
-    - For scenarios which do not have a single device identifier associated to the token during the authentication flow, e.g. 2-legged access tokens, the `phoneNumber` parameter MUST be provided in the API request. This ensures that the device identification is explicit and valid for each API call made with these tokens.
+    - If the subject can be identified from the access token and the optional `phoneNumber` field is also included in the request, then the server will return an error with the `422 UNNECESSARY_IDENTIFIER` error code. This will be the case even if the same phone number is identified by these two methods, as the server is unable to make this comparison.
 
     # Further info and support
 
@@ -151,10 +143,6 @@ paths:
           $ref: '#/components/responses/Generic403'
         "404":
           $ref: '#/components/responses/Generic404'
-        "406":
-          $ref: '#/components/responses/Generic406'
-        "415":
-          $ref: '#/components/responses/Generic415'
         "422":
           $ref: '#/components/responses/Generic422'
         "429":
@@ -272,40 +260,6 @@ components:
                 status: 404
                 code: IDENTIFIER_NOT_FOUND
                 message: The phone number provided is not associated with a customer account
-
-    Generic406:
-      description: Not Acceptable
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/X-Correlator"
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          examples:
-            GENERIC_406_NOT_ACCEPTABLE:
-              description: API Server does not accept the media type (`Accept-*` header) indicated by API client
-              value:
-                status: 406
-                code: NOT_ACCEPTABLE
-                message: The server cannot produce a response matching the content requested by the client through `Accept-*` headers.
-
-    Generic415:
-      description: Unsupported Media Type
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/X-Correlator"
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/ErrorInfo"
-          examples:
-            GENERIC_415_UNSUPPORTED_MEDIA_TYPE:
-              description: Payload format of the request is in an unsupported format by the Server. Should not happen
-              value:
-                status: 415
-                code: UNSUPPORTED_MEDIA_TYPE
-                message: The server refuses to accept the request because the payload format is in an unsupported format.
 
     Generic422:
       description: Unprocessable Content
