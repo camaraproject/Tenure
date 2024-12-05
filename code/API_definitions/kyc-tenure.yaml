@@ -1,0 +1,440 @@
+openapi: 3.0.3
+info:
+  title: CAMARA KYC Tenure
+  description: |
+    # Summary
+
+    The CAMARA Know Your Customer (KYC) Tenure API allows for verification that a network subscriber has been a customer of the Communications Service Provider (CSP) for a specified minimum length of time so as to establish a level of trust for the associated network subscription identifier.
+
+    # Authorization and authentication
+
+    The "Camara Security and Interoperability Profile" provides details on how a client requests an access token. Please refer to Identify and Consent Management (https://github.com/camaraproject/IdentityAndConsentManagement/) for the released version of the Profile.
+
+    Which specific authorization flows are to be used will be determined during onboarding process, happening between the API Client and the Telco Operator exposing the API, taking into account the declared purpose for accessing the API, while also being subject to the prevailing legal framework dictated by local legislation.
+
+    It is important to remark that in cases where personal user data is processed by the API, and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of 3-legged access tokens becomes mandatory. This measure ensures that the API remains in strict compliance with user privacy preferences and regulatory obligations, upholding the principles of transparency and user-centric data control.
+
+    # API functionality
+
+    The API defines one service endpoint:
+
+    - `POST /check-tenure`
+
+      Takes the network subscription identifier (e.g. the mobile phone number for a mobile network subscriber) and the specified minimum tenure date to validate for the associated network subscription. This endpoint will respond with a confirmation of whether or not the network subscriber tenure is longer than the specified date timestamp, optionally supplemented with details of the subscription contract type.
+
+    To call this endpoint, the API consumer must first obtain a valid access token with the specified scope from the specified token endpoint, which is then passed to the endpoint via the `Authorization` header. For more details on access token processing, see below.
+
+    ## Inputs
+
+    The endpoint request body is a JSON object with the following parameters:
+    - `tenureDate`: The date from which continuous tenure of the identified network subscriber is required to be confirmed. This field is always required.
+    - `phoneNumber`: The network subscription identifier (i.e. the phone number of the subscriber). This field is only required if no network subscription identifier is associated with the access token.
+
+    ## Outputs
+
+    If successful, a JSON object is returned containing the following data:
+    - `tenureDateCheck`: `true` when the identified network subscription has had valid tenure since `tenureDate`, otherwise `false`
+    - `contractType`: The network subscription account type, if known
+
+    An example of a JSON response object is as follows:
+    ```
+    {
+       "tenureDateCheck": true,
+       "contractType": "PAYM"
+    }
+    ```
+
+    ## Errors
+
+    If the authentication token is missing or not a valid token, a `401 UNAUTHENTICATED` error is returned
+
+    If the authentication token is no longer valid, a `401 AUTHENTICATION_REQUIRED` error is returned
+
+    If the API call contain a formatting or other error, a `400 INVALID_ARGUMENT` error is returned.
+
+    If the network subscription cannot be identified from the provided parameters (e.g. the subscription identifier is not associated with any customer of the CSP), a `404 IDENTIFIER_NOT_FOUND` error is returned.
+
+    If the API consumer has a valid access token but is not authorised to obtain tenure information for the specified network subscription, then a `403 PERMISSION_DENIED` error is returned.
+
+    Other errors may be returned as specified in the example responses below.
+
+    # Identifying the phone number from the access token
+
+    This API requires the API consumer to identify a phone number as the subject of the API as follows:
+    - When the API is invoked using a two-legged access token, the subject will be identified from the optional `phoneNumber` field, which therefore MUST be provided.
+
+    - When a three-legged access token is used however, this optional identifier MUST NOT be provided, as the subject will be uniquely identified from the access token.
+
+    This approach simplifies API usage for API consumers using a three-legged access token to invoke the API by relying on the information that is associated with the access token and was identified during the authentication process.
+
+    ## Error handling:
+    - If the subject cannot be identified from the access token and the optional `phoneNumber` field is not included in the request, then the server will return an error with the `422 MISSING_IDENTIFIER` error code.
+
+    - If the subject can be identified from the access token and the optional `phoneNumber` field is also included in the request, then the server will return an error with the `422 UNNECESSARY_IDENTIFIER` error code. This will be the case even if the same phone number is identified by these two methods, as the server is unable to make this comparison.
+
+    # Further info and support
+
+    (FAQs will be added in a later version of the documentation)
+
+  version: wip
+  contact:
+    email: sp-kyc@lists.camaraproject.org
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+
+externalDocs:
+  description: Product documentation at CAMARA
+  url: https://github.com/camaraproject/Tenure
+
+servers:
+  - url: "{apiRoot}/kyc-tenure/vwip"
+    variables:
+      apiRoot:
+        default: https://localhost:443
+        description: API root
+
+tags:
+  - name: Check Subscriber Tenure
+    description: Check details about the length of tenure of the subscriber
+
+paths:
+  /check-tenure:
+    post:
+      tags:
+        - Check Subscriber Tenure
+      summary: The KYC Tenure service API
+      description: |
+        Verifies a specified minimum length of tenure for a network subscriber to establish a level of trust for the network subscription identifier.
+
+      security:
+        - openId:
+            - kyc-tenure:check-tenure
+
+      operationId: checkTenure
+
+      parameters:
+        - in: header
+          name: x-correlator
+          description: Correlation id for the different services
+          required: false
+          schema:
+            type: string
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TenureDate"
+
+      responses:
+        "200":
+          description: Respond with tenure information
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TenureInfo"
+
+        "400":
+          $ref: '#/components/responses/Generic400'
+        "401":
+          $ref: '#/components/responses/Generic401'
+        "403":
+          $ref: '#/components/responses/Generic403'
+        "404":
+          $ref: '#/components/responses/Generic404'
+        "422":
+          $ref: '#/components/responses/Generic422'
+        "429":
+          $ref: '#/components/responses/Generic429'
+        "500":
+          $ref: '#/components/responses/Generic500'
+        "503":
+          $ref: '#/components/responses/Generic503'
+        "504":
+          $ref: '#/components/responses/Generic504'
+
+components:
+
+  securitySchemes:
+    openId:
+      type: openIdConnect
+      openIdConnectUrl: .well-known/openid-configuration
+
+  headers:
+    X-Correlator:
+      description: Correlation id for the different services
+      required: false
+      schema:
+        type: string
+
+  responses:
+    Generic400:
+      description: Bad Request
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/X-Correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          examples:
+            GENERIC_400_INVALID_ARGUMENT:
+              description: Invalid Argument. Generic Syntax Exception
+              value:
+                status: 400
+                code: INVALID_ARGUMENT
+                message: Client specified an invalid argument, request body or query param.
+            GENERIC_400_OUT_OF_RANGE:
+              description: Out of Range. Specific Syntax Exception used when a given field has a pre-defined range or a invalid filter criteria combination is requested
+              value:
+                status: 400
+                code: OUT_OF_RANGE
+                message: Client specified an invalid range.
+
+    Generic401:
+      description: Unauthorized
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/X-Correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          examples:
+            GENERIC_401_UNAUTHENTICATED:
+              description: Request cannot be authenticated
+              value:
+                status: 401
+                code: UNAUTHENTICATED
+                message: Request not authenticated due to missing, invalid, or expired credentials.
+            GENERIC_401_AUTHENTICATION_REQUIRED:
+              description: New authentication is needed, authentication is no longer valid
+              value:
+                status: 401
+                code: AUTHENTICATION_REQUIRED
+                message: New authentication is required.
+
+    Generic403:
+      description: Forbidden
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/X-Correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          examples:
+            GENERIC_403_PERMISSION_DENIED:
+              description: Permission denied. OAuth2 token access does not have the required scope or when the user fails operational security
+              value:
+                status: 403
+                code: PERMISSION_DENIED
+                message: Client does not have sufficient permissions to perform this action.
+            GENERIC_403_INVALID_TOKEN_CONTEXT:
+              description: Reflect some inconsistency between information in some field of the API and the related OAuth2 Token
+              value:
+                status: 403
+                code: INVALID_TOKEN_CONTEXT
+                message: "{{field}} is not consistent with access token."
+
+    Generic404:
+      description: Not found
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/X-Correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          examples:
+            GENERIC_404_NOT_FOUND:
+              description: Resource is not found
+              value:
+                status: 404
+                code: NOT_FOUND
+                message: The specified resource is not found.
+            GENERIC_404_IDENTIFIER_NOT_FOUND:
+              description: The phone number is not associated with a CSP customer account
+              value:
+                status: 404
+                code: IDENTIFIER_NOT_FOUND
+                message: The phone number provided is not associated with a customer account
+
+    Generic422:
+      description: Unprocessable Content
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/X-Correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          examples:
+            GENERIC_422_SERVICE_NOT_APPLICABLE:
+              description: Service is not applicable for the provided phone number
+              value:
+                status: 422
+                code: SERVICE_NOT_APPLICABLE
+                message: The service is not applicable for the provided phone number
+            GENERIC_422_MISSING_IDENTIFIER:
+              description: No phone number has been provided either explicitly or associated with the access token
+              value:
+                status: 422
+                code: MISSING_IDENTIFIER
+                message: No phone number has been provided
+            GENERIC_422_UNNECESSARY_IDENTIFIER:
+              description: An explicit phone number has been provided when one is already associated with the access token
+              value:
+                status: 422
+                code: UNNECESSARY_IDENTIFIER
+                message: An explicit phone number has been provided when one is already associated with the access token
+
+    Generic429:
+      description: Too Many Requests
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/X-Correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          examples:
+            GENERIC_429_QUOTA_EXCEEDED:
+              description: Request is rejected due to exceeding a business quota limit
+              value:
+                status: 429
+                code: QUOTA_EXCEEDED
+                message: Either out of resource quota or reaching rate limiting.
+            GENERIC_429_TOO_MANY_REQUESTS:
+              description: API Server request limit is overpassed
+              value:
+                status: 429
+                code: TOO_MANY_REQUESTS
+                message: Either out of resource quota or reaching rate limiting.
+
+    Generic500:
+      description: Internal Server Error
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/X-Correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          examples:
+            GENERIC_500_INTERNAL:
+              description: Problem in Server side. Regular Server Exception
+              value:
+                status: 500
+                code: INTERNAL
+                message: Unknown server error. Typically a server bug.
+
+    Generic502:
+      description: Bad Gateway
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/X-Correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          examples:
+            GENERIC_502_BAD_GATEWAY:
+              description: Internal routing problem in the Server side that blocks to manage the service properly
+              value:
+                status: 502
+                code: BAD_GATEWAY
+                message: An upstream internal service cannot be reached.
+
+    Generic503:
+      description: Service Unavailable
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/X-Correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          examples:
+            GENERIC_503_UNAVAILABLE:
+              description: Service is not available. Temporary situation usually related to maintenance process in the server side
+              value:
+                status: 503
+                code: UNAVAILABLE
+                message: Service Unavailable.
+
+    Generic504:
+      description: Gateway Timeout
+      headers:
+        x-correlator:
+          $ref: "#/components/headers/X-Correlator"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorInfo"
+          examples:
+            GENERIC_504_TIMEOUT:
+              description: API Server Timeout
+              value:
+                status: 504
+                code: TIMEOUT
+                message: Request timeout exceeded.
+
+  schemas:
+    TenureDate:
+      description: Specifies date from which continuous tenure of the identified mobile subscriber is required to be confirmed
+      type: object
+      properties:
+        phoneNumber:
+          $ref: "#/components/schemas/PhoneNumber"
+        tenureDate:
+          type: string
+          description: The date from which continuous tenure of the identified network subscriber is required to be confirmed
+          format: date-time
+          example: "2023-07-03T00:00:00Z"
+      required:
+        - tenureDate
+
+    PhoneNumber:
+      description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
+      type: string
+      pattern: '^\+[1-9][0-9]{4,14}$'
+      example: "+123456789"
+
+    TenureInfo:
+      properties:
+        tenureDateCheck:
+          description: |
+            `true` when the identified mobile subscription has had valid tenure since `tenureDate`, otherwise `false`
+          example: true
+          type: boolean
+        contractType:
+          description: |
+            If exists, populated with:
+            - `PAYG` – prepaid (pay-as-you-go) account
+            - `PAYM` – contract account
+            - `Business` – Business (enterprise) account
+            This attribute may be omitted from the response set where value is not known on the local MNO system.
+          example: "PAYM"
+          type: string
+          enum: ["PAYG", "PAYM", "Business"]
+      required:
+        - tenureDateCheck
+
+    ErrorInfo:
+      type: object
+      required:
+        - message
+        - status
+        - code
+      properties:
+        message:
+          type: string
+          description: A human readable description of what the event represent
+        status:
+          type: integer
+          description: HTTP response status code
+        code:
+          type: string
+          description: Friendly Code to describe the error
