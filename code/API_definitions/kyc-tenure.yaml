@@ -391,9 +391,9 @@ components:
           $ref: "#/components/schemas/PhoneNumber"
         tenureDate:
           type: string
-          description: The date from which continuous tenure of the identified network subscriber is required to be confirmed
-          format: date-time
-          example: "2023-07-03T00:00:00Z"
+          description: The date, in RFC 3339 / ISO 8601 compliant format "YYYY-MM-DD", from which continuous tenure of the identified network subscriber is required to be confirmed
+          format: date
+          example: "2023-07-03"
       required:
         - tenureDate
 
