@@ -84,17 +84,7 @@ Feature: CAMARA Tenure API, v0.1.0-rc.1 - Operation check-tenure
         And the response property "$.code" is "INVALID_ARGUMENT"
         And the response property "$.message" contains a user friendly text
 
-    @checkTenure_400.4_phone_number_not_schema_compliant
-    Scenario: Phone number value does not comply with the schema
-        Given the header "Authorization" is set to a valid access which does not identify a single phone number
-        And the request body property "$.phoneNumber" does not comply with the OAS schema at "/components/schemas/PhoneNumber"
-        When the HTTP "POST" request is sent
-        Then the response status code is 400
-        And the response property "$.status" is 400
-        And the response property "$.code" is "INVALID_ARGUMENT"
-        And the response property "$.message" contains a user friendly text
 
-    
     # Generic 401 errors
 
     @checkTenure_401.1_expired_access_token
@@ -126,13 +116,23 @@ Feature: CAMARA Tenure API, v0.1.0-rc.1 - Operation check-tenure
         And the response property "$.message" contains a user friendly text
         And the response property "$.status" is 401
 
-    
-    # Generic 404 errors
 
+    # Error scenarios for management of input parameter phoneNumber
+
+    @checkTenure_C02.01_phone_number_not_schema_compliant
+    Scenario: Phone number value does not comply with the schema
+        Given the header "Authorization" is set to a valid access which does not identify a single phone number
+        And the request body property "$.phoneNumber" does not comply with the OAS schema at "/components/schemas/PhoneNumber"
+        When the HTTP "POST" request is sent
+        Then the response status code is 400
+        And the response property "$.status" is 400
+        And the response property "$.code" is "INVALID_ARGUMENT"
+        And the response property "$.message" contains a user friendly text
+    
     # Typically with a 2-legged access token
-    @checkTenure_404.1_phone_number_not_found
+    @checkTenure_C02.02_phone_number_not_found
     Scenario: Phone number not found
-        Given the header "Authorization" is set to a valid access token from which the phone number cannot be deducted
+        Given the header "Authorization" is set to a valid access which does not identify a single phone number
         And the request body property "$.phoneNumber" is compliant with the schema but does not identify a valid subscription managed by the API provider
         When the HTTP "POST" request is sent
         Then the response status code is 404
@@ -140,37 +140,33 @@ Feature: CAMARA Tenure API, v0.1.0-rc.1 - Operation check-tenure
         And the response property "$.code" is "IDENTIFIER_NOT_FOUND"
         And the response property "$.message" contains a user friendly text
 
-    
-    # Generic 422 errors
-
-    @checkTenure_422.1_service_not_applicable
-    Scenario: Service not applicable for the phone number
-        Given that service is not supported for all phone numbers managed by the network operator
-        And a valid phone number, identified by the token or provided in the request body, for which the service is not applicable
-        When the HTTP "POST" request is sent
-        Then the response status code is 422
-        And the response property "$.status" is 422
-        And the response property "$.code" is "SERVICE_NOT_APPLICABLE"
-        And the response property "$.message" contains a user friendly text
-
-    @checkTenure_422.2_missing_identifier
-    Scenario: No valid identifier has been provided
-        Given the header "Authorization" is set to a valid access token from which the phone number cannot be deducted
-        And the request body property "$.phoneNumber" is not present
-        When the HTTP "POST" request is sent
-        Then the response status code is 422
-        And the response property "$.status" is 422
-        And the response property "$.code" is "MISSING_IDENTIFIER"
-        And the response property "$.message" contains a user friendly text
-    
     # Only with a 3-legged access token
-    @checkTenure_422.3_unnecessary_identifier
-    Scenario: No valid identifier has been provided
-        Given a valid testing phone number supported by the service, identified by the access token
-        And the request body property "$.phoneNumber" is set to a valid phone number
+    @checkTenure_C02.03_unnecessary_phone_number
+    Scenario: Phone number not to included when can be deducted from the access token
+        Given the header "Authorization" is set to a valid access token identifying a phone number
+        And  the request body property "$.phoneNumber" is set to a valid phone number
         When the HTTP "POST" request is sent
         Then the response status code is 422
         And the response property "$.status" is 422
         And the response property "$.code" is "UNNECESSARY_IDENTIFIER"
         And the response property "$.message" contains a user friendly text
 
+    @checkTenure_C02.04_missing_phone_number
+    Scenario: Phone number not included and cannot be deducted from the access token
+        Given the header "Authorization" is set to a valid access which does not identify a single phone number
+        And the request body property "$.phoneNumber" is not included
+        When the HTTP "POST" request is sent
+        Then the response status code is 422
+        And the response property "$.status" is 422
+        And the response property "$.code" is "MISSING_IDENTIFIER"
+        And the response property "$.message" contains a user friendly text
+
+    @checkTenure_C02.05_phone_number_not_supported
+    Scenario: Service not available for the phone number
+        Given that the service is not available for all phone numbers commercialized by the operator
+        And a valid phone number, identified by the token or provided in the request body, for which the service is not applicable
+        When the HTTP "POST" request is sent
+        Then the response status code is 422
+        And the response property "$.status" is 422
+        And the response property "$.code" is "SERVICE_NOT_APPLICABLE"
+        And the response property "$.message" contains a user friendly text
