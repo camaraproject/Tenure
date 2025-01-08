@@ -30,10 +30,10 @@ Feature: CAMARA Tenure API, v0.1.0-rc.1 - Operation check-tenure
         And the response header "x-correlator" has same value as the request header "x-correlator"
         And the response body complies with the OAS schema at "/components/schemas/TenureInfo"
         And the response property "$.tenureDateCheck" is true
-        And if the response contains property "$.contractType" is one of ["PAYG", "PAYM", "Business"]
+        And if the response contains property "$.contractType", the value is one of ["PAYG", "PAYM", "Business"]
     
     @checkTenure_2_tenure_check_false
-    Scenario: Validate successful response when tenureDateCheck is true
+    Scenario: Validate successful response when tenureDateCheck is false
         Given a valid testing phone number supported by the service, identified by the access token or provided in the request body
         And the request body property "$.tenureDate" is set to a valid past date in format RFC 3339 / ISO 8601
         And the mobile subscription hasn't had a valid tenure since the provided tenure date
@@ -43,7 +43,7 @@ Feature: CAMARA Tenure API, v0.1.0-rc.1 - Operation check-tenure
         And the response header "x-correlator" has same value as the request header "x-correlator"
         And the response body complies with the OAS schema at "/components/schemas/TenureInfo"
         And the response property "$.tenureDateCheck" is false
-        And if the response contains property "$.contractType" is one of ["PAYG", "PAYM", "Business"]
+        And if the response contains property "$.contractType", the value is one of ["PAYG", "PAYM", "Business"]
 
     
     # Generic 400 errors
@@ -84,6 +84,16 @@ Feature: CAMARA Tenure API, v0.1.0-rc.1 - Operation check-tenure
         And the response property "$.code" is "INVALID_ARGUMENT"
         And the response property "$.message" contains a user friendly text
 
+    @checkTenure_400.4_phone_number_not_schema_compliant
+    Scenario: Phone number value does not comply with the schema
+        Given the header "Authorization" is set to a valid access which does not identify a single phone number
+        And the request body property "$.phoneNumber" does not comply with the OAS schema at "/components/schemas/PhoneNumber"
+        When the HTTP "POST" request is sent
+        Then the response status code is 400
+        And the response property "$.status" is 400
+        And the response property "$.code" is "INVALID_ARGUMENT"
+        And the response property "$.message" contains a user friendly text
+
     
     # Generic 401 errors
 
@@ -99,7 +109,7 @@ Feature: CAMARA Tenure API, v0.1.0-rc.1 - Operation check-tenure
 
     @checkTenure_401.2_invalid_access_token
     Scenario: Error response for invalid access token
-        Given the header "Authorization" is set to an invalid access token
+        Given the header "Authorization" is set to an invalid access token which is invalid for reasons other than lifetime expiry
         When the HTTP "POST" request is sent
         Then the response status code is 401
         And the response property "$.code" is "UNAUTHENTICATED"
@@ -123,7 +133,7 @@ Feature: CAMARA Tenure API, v0.1.0-rc.1 - Operation check-tenure
     @checkTenure_404.1_phone_number_not_found
     Scenario: Phone number not found
         Given the header "Authorization" is set to a valid access token from which the phone number cannot be deducted
-        And the request body property "$.phoneNumber" is compliant with the schema but does not identify a valid subscription
+        And the request body property "$.phoneNumber" is compliant with the schema but does not identify a valid subscription managed by the API provider
         When the HTTP "POST" request is sent
         Then the response status code is 404
         And the response property "$.status" is 404
@@ -135,7 +145,7 @@ Feature: CAMARA Tenure API, v0.1.0-rc.1 - Operation check-tenure
 
     @checkTenure_422.1_service_not_applicable
     Scenario: Service not applicable for the phone number
-        Given that service is not supported for all phone numbers commercialized by the operator
+        Given that service is not supported for all phone numbers managed by the network operator
         And a valid phone number, identified by the token or provided in the request body, for which the service is not applicable
         When the HTTP "POST" request is sent
         Then the response status code is 422
