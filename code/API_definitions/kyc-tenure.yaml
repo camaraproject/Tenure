@@ -85,8 +85,7 @@ info:
     (FAQs will be added in a later version of the documentation)
 
   version: 0.1.0-rc.1
-  contact:
-    email: sp-kyc@lists.camaraproject.org
+  x-camara-commonalities: 0.5
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
@@ -96,10 +95,10 @@ externalDocs:
   url: https://github.com/camaraproject/Tenure
 
 servers:
-  - url: "{apiRoot}/kyc-tenure/v0.1-rc1"
+  - url: "{apiRoot}/kyc-tenure/v0.1rc1"
     variables:
       apiRoot:
-        default: https://localhost:443
+        default: https://localhost:9091
         description: API root
 
 tags:
@@ -113,7 +112,7 @@ paths:
         - Check Subscriber Tenure
       summary: The KYC Tenure service API
       description: |
-        Verifies a specified minimum length of tenure for a network subscriber to establish a level of trust for the network subscription identifier.
+        Verifies a specified length of tenure, based on a provided date, for a network subscriber to establish a level of trust for the network subscription identifier.
 
       security:
         - openId:
@@ -134,7 +133,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TenureDate"
+              $ref: "#/components/schemas/Tenure"
 
       responses:
         "200":
@@ -168,7 +167,7 @@ components:
   securitySchemes:
     openId:
       type: openIdConnect
-      openIdConnectUrl: .well-known/openid-configuration
+      openIdConnectUrl: https://example.com/.well-known/openid-configuration
 
   headers:
     X-Correlator:
@@ -474,7 +473,7 @@ components:
                 message: Request timeout exceeded.
 
   schemas:
-    TenureDate:
+    Tenure:
       description: Specifies date from which continuous tenure of the identified mobile subscriber is required to be confirmed
       type: object
       properties:
@@ -507,7 +506,7 @@ components:
             - `PAYG` - prepaid (pay-as-you-go) account
             - `PAYM` - contract account
             - `Business` - Business (enterprise) account
-            This attribute may be omitted from the response set where value is not known on the local network operator system.
+            This attribute may be omitted from the response set if the information is not available
           example: "PAYM"
           type: string
           enum: ["PAYG", "PAYM", "Business"]
