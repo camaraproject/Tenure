@@ -66,7 +66,7 @@ Feature: CAMARA Tenure API, v0.1.0-rc.1 - Operation check-tenure
         And the response property "$.code" is "INVALID_ARGUMENT"
         And the response property "$.message" contains a user friendly text
 
-    @check_device_swap_400.3_out_of_range
+    @checkTenure_400.3_out_of_range
     Scenario: Error when tenureDate is out of range
         Given the request body property "$.tenureDate" is set to a value in the future
         When the HTTP "POST" request is sent
@@ -142,7 +142,7 @@ Feature: CAMARA Tenure API, v0.1.0-rc.1 - Operation check-tenure
 
     # Only with a 3-legged access token
     @checkTenure_C02.03_unnecessary_phone_number
-    Scenario: Phone number not to included when can be deducted from the access token
+    Scenario: Phone number should not be included when it can be deducted from the access token
         Given the header "Authorization" is set to a valid access token identifying a phone number
         And  the request body property "$.phoneNumber" is set to a valid phone number
         When the HTTP "POST" request is sent
