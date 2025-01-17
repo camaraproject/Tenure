@@ -135,7 +135,6 @@ paths:
           headers:
             x-correlator:
               $ref: "#/components/headers/X-Correlator"
-              
           content:
             application/json:
               schema:
