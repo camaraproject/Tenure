@@ -127,6 +127,8 @@ paths:
           required: false
           schema:
             type: string
+            pattern: ^[a-zA-Z0-9-]{1,55}$
+            example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
 
       requestBody:
         required: true
@@ -138,6 +140,9 @@ paths:
       responses:
         "200":
           description: Respond with tenure information
+          headers:
+            x-correlator:
+              $ref: "#/components/headers/X-Correlator"
           content:
             application/json:
               schema:
@@ -175,6 +180,8 @@ components:
       required: false
       schema:
         type: string
+        pattern: ^[a-zA-Z0-9-]{1,55}$
+        example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
 
   responses:
     Generic400:
