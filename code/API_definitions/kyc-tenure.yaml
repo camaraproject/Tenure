@@ -72,13 +72,20 @@ info:
 
     - If the subject can be identified from the access token and the optional `phoneNumber` field is also included in the request, then the server will return an error with the `422 UNNECESSARY_IDENTIFIER` error code. This will be the case even if the same phone number is identified by these two methods, as the server is unable to make this comparison.
 
+    # Authorization and authentication
+
+    The "Camara Security and Interoperability Profile" provides details of how an API consumer requests an access token. Please refer to Identity and Consent Management (https://github.com/camaraproject/IdentityAndConsentManagement/) for the released version of the profile.
+
+    The specific authorization flows to be used will be agreed upon during the onboarding process, happening between the provider of the application consuming the API and the operator's API exposure platform, taking into account the declared purpose for accessing the API, whilst also being subject to the prevailing legal framework dictated by local legislation.
+
+    In cases where personal data is processed by the API and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of three-legged access tokens is mandatory. This ensures that the API remains in compliance with privacy regulations, upholding the principles of transparency and user-centric privacy-by-design.
+
     # Further info and support
 
     (FAQs will be added in a later version of the documentation)
 
-  version: wip
-  contact:
-    email: sp-kyc@lists.camaraproject.org
+  version: 0.1.0-rc.1
+  x-camara-commonalities: 0.5
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
@@ -88,10 +95,10 @@ externalDocs:
   url: https://github.com/camaraproject/Tenure
 
 servers:
-  - url: "{apiRoot}/kyc-tenure/vwip"
+  - url: "{apiRoot}/kyc-tenure/v0.1rc1"
     variables:
       apiRoot:
-        default: https://localhost:443
+        default: https://localhost:9091
         description: API root
 
 tags:
@@ -105,7 +112,7 @@ paths:
         - Check Subscriber Tenure
       summary: The KYC Tenure service API
       description: |
-        Verifies a specified minimum length of tenure for a network subscriber to establish a level of trust for the network subscription identifier.
+        Verifies a specified length of tenure, based on a provided date, for a network subscriber to establish a level of trust for the network subscription identifier.
 
       security:
         - openId:
@@ -128,7 +135,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TenureDate"
+              $ref: "#/components/schemas/Tenure"
 
       responses:
         "200":
@@ -165,7 +172,7 @@ components:
   securitySchemes:
     openId:
       type: openIdConnect
-      openIdConnectUrl: .well-known/openid-configuration
+      openIdConnectUrl: https://example.com/.well-known/openid-configuration
 
   headers:
     X-Correlator:
@@ -473,7 +480,7 @@ components:
                 message: Request timeout exceeded.
 
   schemas:
-    TenureDate:
+    Tenure:
       description: Specifies date from which continuous tenure of the identified mobile subscriber is required to be confirmed
       type: object
       properties:
@@ -503,10 +510,10 @@ components:
         contractType:
           description: |
             If exists, populated with:
-            - `PAYG` – prepaid (pay-as-you-go) account
-            - `PAYM` – contract account
-            - `Business` – Business (enterprise) account
-            This attribute may be omitted from the response set where value is not known on the local MNO system.
+            - `PAYG` - prepaid (pay-as-you-go) account
+            - `PAYM` - contract account
+            - `Business` - Business (enterprise) account
+            This attribute may be omitted from the response set if the information is not available
           example: "PAYM"
           type: string
           enum: ["PAYG", "PAYM", "Business"]
