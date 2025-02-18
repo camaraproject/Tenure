@@ -19,11 +19,11 @@ Repository to describe, develop, document, and test the Tenure API within the Kn
 ## Release Information
 
 * Note: Please be aware that the project will have updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until a new release is created. For example, changes may be reverted before a release is created. For best results, use the latest available release
-* **The latest pre-release of CAMARA Tenure is [r1.1](https://github.com/camaraproject/Tenure/tree/r1.1)**. The Release Tag is [r1.1](https://github.com/camaraproject/Tenure/releases/tag/r1.1).
+* **The latest public release of CAMARA Tenure is [r1.2](https://github.com/camaraproject/Tenure/tree/r1.2)**. The Release Tag is [r1.2](https://github.com/camaraproject/Tenure/releases/tag/r1.2).
   * API definition **with inline documentation**:
-    * [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/Tenure/r1.1/code/API_definitions/kyc-tenure.yaml&nocors)
-    * [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/Tenure/r1.1/code/API_definitions/kyc-tenure.yaml)
-    * OpenAPI [YAML spec file](https://github.com/camaraproject/Tenure/blob/r1.1/code/API_definitions/kyc-tenure.yaml)
+    * [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/Tenure/r1.2/code/API_definitions/kyc-tenure.yaml&nocors)
+    * [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/Tenure/r1.2/code/API_definitions/kyc-tenure.yaml)
+    * OpenAPI [YAML spec file](https://github.com/camaraproject/Tenure/blob/r1.2/code/API_definitions/kyc-tenure.yaml)
 * Other releases of this sub project are available in https://github.com/camaraproject/Tenure/releases
 * For changes see [CHANGELOG.md](https://github.com/camaraproject/Tenure/blob/main/CHANGELOG.md)
 
