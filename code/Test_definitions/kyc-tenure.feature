@@ -1,4 +1,4 @@
-Feature: CAMARA Tenure API, vwip - Operation check-tenure
+Feature: CAMARA Tenure API, v0.1 - Operation check-tenure
     # Input to be provided by the implementation to the tester
     #
     # Implementation indications:
@@ -6,11 +6,11 @@ Feature: CAMARA Tenure API, vwip - Operation check-tenure
     # Testing assets:
     # * A mobile line identified by its phone number "phoneNumber"
     #
-    # References to OAS spec schemas refer to schemas specifies in kyc-tenure.yaml, version wip
+    # References to OAS spec schemas refer to schemas specifies in kyc-tenure.yaml, version 0.1.0
 
     Background: Common checkTenure setup
         Given an environment at "apiRoot"
-        And the resource "/kyc-tenure/vwip/check-tenure"
+        And the resource "/kyc-tenure/v0.1/check-tenure"
         And the header "Content-Type" is set to "application/json"
         And the header "Authorization" is set to a valid access token
         And the header "x-correlator" is set to a UUID value
