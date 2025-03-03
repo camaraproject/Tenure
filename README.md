@@ -5,13 +5,14 @@
 <a href="https://github.com/camaraproject/Tenure" title="Repo Size"><img src="https://img.shields.io/github/repo-size/camaraproject/Tenure?style=plastic"></a>
 <a href="https://github.com/camaraproject/Tenure/blob/main/LICENSE" title="License"><img src="https://img.shields.io/badge/License-Apache%202.0-green.svg?style=plastic"></a>
 <a href="https://github.com/camaraproject/Tenure/releases/latest" title="Latest Release"><img src="https://img.shields.io/github/release/camaraproject/Tenure?style=plastic"></a>
+<a href="https://github.com/camaraproject/Governance/blob/main/ProjectStructureAndRoles.md" title="Sandbox API Repository"><img src="https://img.shields.io/badge/Sandbox%20API%20Repository-yellow?style=plastic"></a>
 
 # Tenure
-Repository to describe, develop, document, and test the Tenure API within the KnowYourCustomer (KYC) API family.
+Repository to describe, develop, document, and test the Tenure API within the Sub Project [Know Your Customer (KYC)](https://lf-camaraproject.atlassian.net/wiki/x/I4DGB).
 
 ## Scope
 * Service API(s) for “Tenure” (see [APIBacklog.md](https://github.com/camaraproject/APIBacklog/blob/main/documentation/APIbacklog.md))
-* It provides the customer with the ability to:  
+* It provides the API consumer with the ability to:
   * Establish a level of trust for a given network subscription identifier (e.g. phone number) by verifying the period of time (i.e. "tenure") for which the end user currently allocated that identifier has been associated with it by their current network operator.
 * Describe, develop, document, and test the APIs
 * Started: May 2024

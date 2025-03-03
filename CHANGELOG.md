@@ -34,13 +34,18 @@ The API definition(s) are based on
   - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/Tenure/r1.2/code/API_definitions/kyc-tenure.yaml)
   - OpenAPI [YAML spec file](https://github.com/camaraproject/Tenure/blob/r1.2/code/API_definitions/kyc-tenure.yaml)
 
+### Added
+* Initial API proposal by @eric-murray in https://github.com/camaraproject/Tenure/pull/11
+
 ### Changed
+* Request body should be required by @eric-murray in https://github.com/camaraproject/Tenure/pull/15
+* Change tenure date format from date-time to date by @eric-murray in https://github.com/camaraproject/Tenure/pull/17
+* Update error response schema to align with Commonalities by @eric-murray in https://github.com/camaraproject/Tenure/pull/16
 * Update ICM authorisation and authentication wording kyc-tenure.yaml by @eric-murray in https://github.com/camaraproject/Tenure/pull/24
 * Remove non mandatory errors following new commonalities by @GillesInnov35 in https://github.com/camaraproject/Tenure/pull/28
-* Update MAINTAINERS.MD by @hdamker in https://github.com/camaraproject/Tenure/pull/29
 
 ## New Contributors
-* @hdamker made their first contribution in https://github.com/camaraproject/Tenure/pull/29
+* @eric-murray made their first contribution in https://github.com/camaraproject/Tenure/pull/6
 
 **Full Changelog**: https://github.com/camaraproject/Tenure/compare/r1.1...r1.2
 
