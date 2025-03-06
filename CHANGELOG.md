@@ -45,7 +45,7 @@ The API definition(s) are based on
 * Remove non mandatory errors following new commonalities by @GillesInnov35 in https://github.com/camaraproject/Tenure/pull/28
 
 ## New Contributors
-* @eric-murray made their first contribution in https://github.com/camaraproject/Tenure/pull/6
+* @eric-murray made their first contribution in https://github.com/camaraproject/Tenure/pull/11
 
 **Full Changelog**: https://github.com/camaraproject/Tenure/compare/r1.1...r1.2
 
