@@ -47,7 +47,7 @@ The API definition(s) are based on
 ## New Contributors
 * @eric-murray made their first contribution in https://github.com/camaraproject/Tenure/pull/11
 
-**Full Changelog**: https://github.com/camaraproject/Tenure/compare/r1.1...r1.2
+**Full Changelog**: https://github.com/camaraproject/Tenure/commits/r1.2
 
 # r1.1
 
