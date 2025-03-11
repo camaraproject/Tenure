@@ -5,13 +5,14 @@
 <a href="https://github.com/camaraproject/Tenure" title="Repo Size"><img src="https://img.shields.io/github/repo-size/camaraproject/Tenure?style=plastic"></a>
 <a href="https://github.com/camaraproject/Tenure/blob/main/LICENSE" title="License"><img src="https://img.shields.io/badge/License-Apache%202.0-green.svg?style=plastic"></a>
 <a href="https://github.com/camaraproject/Tenure/releases/latest" title="Latest Release"><img src="https://img.shields.io/github/release/camaraproject/Tenure?style=plastic"></a>
+<a href="https://github.com/camaraproject/Governance/blob/main/ProjectStructureAndRoles.md" title="Sandbox API Repository"><img src="https://img.shields.io/badge/Sandbox%20API%20Repository-yellow?style=plastic"></a>
 
 # Tenure
-Repository to describe, develop, document, and test the Tenure API within the KnowYourCustomer (KYC) API family.
+Repository to describe, develop, document, and test the Tenure API within the Sub Project [Know Your Customer (KYC)](https://lf-camaraproject.atlassian.net/wiki/x/I4DGB).
 
 ## Scope
 * Service API(s) for “Tenure” (see [APIBacklog.md](https://github.com/camaraproject/APIBacklog/blob/main/documentation/APIbacklog.md))
-* It provides the customer with the ability to:  
+* It provides the API consumer with the ability to:
   * Establish a level of trust for a given network subscription identifier (e.g. phone number) by verifying the period of time (i.e. "tenure") for which the end user currently allocated that identifier has been associated with it by their current network operator.
 * Describe, develop, document, and test the APIs
 * Started: May 2024
@@ -19,11 +20,11 @@ Repository to describe, develop, document, and test the Tenure API within the Kn
 ## Release Information
 
 * Note: Please be aware that the project will have updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until a new release is created. For example, changes may be reverted before a release is created. For best results, use the latest available release
-* **The latest pre-release of CAMARA Tenure is [r1.1](https://github.com/camaraproject/Tenure/tree/r1.1)**. The Release Tag is [r1.1](https://github.com/camaraproject/Tenure/releases/tag/r1.1).
+* **The latest public release of CAMARA Tenure is [r1.2](https://github.com/camaraproject/Tenure/tree/r1.2)**. The Release Tag is [r1.2](https://github.com/camaraproject/Tenure/releases/tag/r1.2).
   * API definition **with inline documentation**:
-    * [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/Tenure/r1.1/code/API_definitions/kyc-tenure.yaml&nocors)
-    * [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/Tenure/r1.1/code/API_definitions/kyc-tenure.yaml)
-    * OpenAPI [YAML spec file](https://github.com/camaraproject/Tenure/blob/r1.1/code/API_definitions/kyc-tenure.yaml)
+    * [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/Tenure/r1.2/code/API_definitions/kyc-tenure.yaml&nocors)
+    * [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/Tenure/r1.2/code/API_definitions/kyc-tenure.yaml)
+    * OpenAPI [YAML spec file](https://github.com/camaraproject/Tenure/blob/r1.2/code/API_definitions/kyc-tenure.yaml)
 * Other releases of this sub project are available in https://github.com/camaraproject/Tenure/releases
 * For changes see [CHANGELOG.md](https://github.com/camaraproject/Tenure/blob/main/CHANGELOG.md)
 
