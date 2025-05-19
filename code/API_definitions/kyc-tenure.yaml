@@ -46,9 +46,7 @@ info:
 
     ## Errors
 
-    If the authentication token is missing or not a valid token, a `401 UNAUTHENTICATED` error is returned
-
-    If the authentication token is no longer valid, a `401 AUTHENTICATION_REQUIRED` error is returned
+    If the authentication token is missing, not a valid token, or is no longer valid, a `401 UNAUTHENTICATED` error is returned
 
     If the API call contain a formatting or other error, a `400 INVALID_ARGUMENT` error is returned.
 
@@ -228,20 +226,13 @@ components:
                   code:
                     enum:
                       - UNAUTHENTICATED
-                      - AUTHENTICATION_REQUIRED
           examples:
             GENERIC_401_UNAUTHENTICATED:
-              description: Request cannot be authenticated
+              description: Request cannot be authenticated and a new authentication is required
               value:
                 status: 401
                 code: UNAUTHENTICATED
-                message: Request not authenticated due to missing, invalid, or expired credentials.
-            GENERIC_401_AUTHENTICATION_REQUIRED:
-              description: New authentication is needed, authentication is no longer valid
-              value:
-                status: 401
-                code: AUTHENTICATION_REQUIRED
-                message: New authentication is required.
+                message: Request not authenticated due to missing, invalid, or expired credentials. A new authentication is required.
 
     Generic403:
       description: Forbidden
