@@ -361,6 +361,7 @@ components:
             - `PAYG` - prepaid (pay-as-you-go) account
             - `PAYM` - contract account
             - `Business` - Business (enterprise) account
+            
             This attribute may be omitted from the response set if the information is not available
           example: "PAYM"
           type: string
