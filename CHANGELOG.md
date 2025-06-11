@@ -31,7 +31,7 @@ The API definition(s) are based on
 
 - kyc-tenure v0.1.0 API definition **with inline documentation**:
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/Tenure/r1.2/code/API_definitions/kyc-tenure.yaml&nocors)
-  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/Tenure/r1.2/code/API_definitions/kyc-tenure.yaml)
+  - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/Tenure/r1.2/code/API_definitions/kyc-tenure.yaml)
   - OpenAPI [YAML spec file](https://github.com/camaraproject/Tenure/blob/r1.2/code/API_definitions/kyc-tenure.yaml)
 
 ### Added
@@ -66,7 +66,7 @@ The API definition(s) are based on
 
 - kyc-tenure v0.1.0-rc.1 API definition **with inline documentation**:
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/Tenure/r1.1/code/API_definitions/kyc-tenure.yaml&nocors)
-  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/Tenure/r1.1/code/API_definitions/kyc-tenure.yaml)
+  - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/Tenure/r1.1/code/API_definitions/kyc-tenure.yaml)
   - OpenAPI [YAML spec file](https://github.com/camaraproject/Tenure/blob/r1.1/code/API_definitions/kyc-tenure.yaml)
 
 **Main changes**
