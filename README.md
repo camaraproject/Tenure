@@ -8,7 +8,10 @@
 <a href="https://github.com/camaraproject/Governance/blob/main/ProjectStructureAndRoles.md" title="Sandbox API Repository"><img src="https://img.shields.io/badge/Sandbox%20API%20Repository-yellow?style=plastic"></a>
 
 # Tenure
-Repository to describe, develop, document, and test the Tenure API within the Sub Project [Know Your Customer (KYC)](https://lf-camaraproject.atlassian.net/wiki/x/I4DGB).
+
+Sandbox API Repository to describe, develop, document, and test the Tenure Service API(s) within the Sub Project [Know Your Customer (KYC)](https://lf-camaraproject.atlassian.net/wiki/x/I4DGB).
+
+* API Repository [wiki page](https://lf-camaraproject.atlassian.net/wiki/x/ZIDGB)
 
 ## Scope
 * Service API(s) for “Tenure” (see [APIBacklog.md](https://github.com/camaraproject/APIBacklog/blob/main/documentation/APIbacklog.md))
