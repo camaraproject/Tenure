@@ -124,9 +124,7 @@ paths:
           description: Correlation id for the different services
           required: false
           schema:
-            type: string
-            pattern: ^[a-zA-Z0-9-]{1,55}$
-            example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
+            $ref: "#/components/schemas/XCorrelator"
 
       requestBody:
         required: true
@@ -170,9 +168,7 @@ components:
       description: Correlation id for the different services
       required: false
       schema:
-        type: string
-        pattern: ^[a-zA-Z0-9-]{1,55}$
-        example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
+        $ref: "#/components/schemas/XCorrelator"
 
   responses:
     Generic400:
@@ -385,3 +381,8 @@ components:
         code:
           type: string
           description: Friendly Code to describe the error
+
+    XCorrelator:
+      type: string
+      pattern: ^[a-zA-Z0-9-_:;.\/<>{}]{0,256}$
+      example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
