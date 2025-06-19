@@ -88,7 +88,7 @@ info:
 
     (FAQs will be added in a later version of the documentation)
 
-  version: wip
+  version: 0.2.0-rc.1
   x-camara-commonalities: 0.5
   license:
     name: Apache 2.0
@@ -99,7 +99,7 @@ externalDocs:
   url: https://github.com/camaraproject/Tenure
 
 servers:
-  - url: "{apiRoot}/kyc-tenure/vwip"
+  - url: "{apiRoot}/kyc-tenure/v0.2rc1"
     variables:
       apiRoot:
         default: https://localhost:9091
