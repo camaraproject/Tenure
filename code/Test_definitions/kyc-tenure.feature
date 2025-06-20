@@ -10,7 +10,7 @@ Feature: CAMARA Tenure API, v0.2.0-rc.1 - Operation checkTenure
 
     Background: Common checkTenure setup
         Given an environment at "apiRoot"
-        And the resource "/kyc-tenure/v0.2rc.1/check-tenure"
+        And the resource "/kyc-tenure/v0.2rc1/check-tenure"
         And the header "Content-Type" is set to "application/json"
         And the header "Authorization" is set to a valid access token
         And the header "x-correlator" is set to a UUID value
