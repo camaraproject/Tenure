@@ -47,7 +47,7 @@ There are no breaking changes compared to v0.1.0
 ### Removed
 * Remove AUTHENTICATION_REQUIRED error code by @eric-murray in https://github.com/camaraproject/Tenure/pull/33
 
-**Full Changelog**: https://github.com/camaraproject/Tenure/compare/r1.2...2.1
+**Full Changelog**: https://github.com/camaraproject/Tenure/compare/r1.2...r2.1
 
 # r1.2
 
