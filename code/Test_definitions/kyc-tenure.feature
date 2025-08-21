@@ -76,11 +76,11 @@ Feature: CAMARA Tenure API, vwip - Operation checkTenure
   @checkTenure_400.4_invalid_argument
   Scenario: Invalid Argument. Generic Syntax Exception
     Given the request body is set to any value which is not compliant with the OAS schema at "/components/schemas/TenureDate"
-     When the HTTP "POST" request is sent
-     Then the response status code is 400
-     And the response property "$.status" is 400
-     And the response property "$.code" is "INVALID_ARGUMENT"
-     And the response property "$.message" contains a user friendly text
+    When the HTTP "POST" request is sent
+    Then the response status code is 400
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
 
   # Generic 401 errors
 
