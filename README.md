@@ -22,7 +22,7 @@ Sandbox API Repository to describe, develop, document, and test the Tenure Servi
 
 ## Release Information
 
-**The latest public release of CAMARA Tenure is release [r2.2](https://github.com/camaraproject/Tenure/tree/r2.2)**.
+**The latest public release of CAMARA Tenure is release [r2.2](https://github.com/camaraproject/Tenure/releases/tag/r2.2)**.
   * API definition **with inline documentation**:
     * [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/Tenure/r2.2/code/API_definitions/kyc-tenure.yaml&nocors)
     * [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/Tenure/r2.2/code/API_definitions/kyc-tenure.yaml)
