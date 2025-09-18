@@ -32,7 +32,7 @@ Sandbox API Repository to describe, develop, document, and test the Tenure Servi
 
 Note: Please be aware that the project will have updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until a new release is created. For example, changes may be reverted before a release is created. For best results, use the latest available release
 ## Contributing
-* Meetings and minutes see [KnowYourCustomer Meetings](https://github.com/camaraproject/KnowYourCustomer?tab=readme-ov-file#meetings)
+* Meetings and minutes see [KnowYourCustomer Meetings](https://lf-camaraproject.atlassian.net/wiki/x/I4DGB)
 * Mailing List
   * Subscribe / Unsubscribe to the mailing list of this Sub Project https://lists.camaraproject.org/g/sp-kyc
   * A message to the community of this Sub Project can be sent using <https://lists.camaraproject.org/g/sp-kyc>
