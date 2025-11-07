@@ -7,5 +7,5 @@
 | Telefonica | Clara Serrano | claraserranosolsona |
 | Telefonica | Jorge García | jgarciahospital |
 | Telefonica | Fernando Pradillo | fernandopradocabrillo |
-| Vodafone | Ali Gilani | ag-vodafone |
-| Vodafone | Luis Lopez Corpas | luislopezcorpas |
+| Vodafone | Sudipta Sarkar | ssarkar-vf |
+| Vodafone | Kevin Scarr | KevScarr |
