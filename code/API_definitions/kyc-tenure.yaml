@@ -22,6 +22,8 @@ info:
     - `tenureDate`: The date from which continuous tenure of the identified network subscriber is required to be confirmed. This field is always required.
     - `phoneNumber`: The network subscription identifier (i.e. the phone number of the subscriber). This field is only required if no network subscription identifier is associated with the access token.
 
+    Note: MNOs may implement a threshold for the tenureDate aligned with their respective regulations. In that case if the tenureDate value in the request body is over the operator's threshold  an error `400 OUT_OF_RANGE `is returned with an explicit message to explain the limitation.
+
     ## Outputs
 
     If successful, a JSON object is returned containing the following data:
