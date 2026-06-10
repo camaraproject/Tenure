@@ -171,6 +171,8 @@ components:
           type: string
           description: The date, in RFC 3339 / ISO 8601 compliant format "YYYY-MM-DD", from which continuous tenure of the identified network subscriber is required to be confirmed
           format: date
+          minLength: 10
+          maxLength: 10
           example: "2023-07-03"
       required:
         - tenureDate
