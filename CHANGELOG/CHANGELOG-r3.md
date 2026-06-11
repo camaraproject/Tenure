@@ -62,7 +62,7 @@ The API definition(s) are based on
 
 ### Added
 
-* N/A
+* Management of an optional threshold for tenureDate by @GillesInnov35 in https://github.com/camaraproject/Tenure/pull/56
 
 ### Changed
 
