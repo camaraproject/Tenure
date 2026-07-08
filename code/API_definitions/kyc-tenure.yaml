@@ -197,5 +197,32 @@ components:
           example: "PAYM"
           type: string
           enum: ["PAYG", "PAYM", "Business"]
+
+        contractLineStructure:
+          description: |
+            Optional qualifier indicating whether the CSP can determine that the underlying contract contains a single line or multiple lines.
+
+            If provided, populated with:
+            - `SINGLE_LINE_CONTRACT` - the underlying contract contains only one line
+            - `MULTI_LINE_CONTRACT` - the underlying contract contains multiple lines
+
+            This attribute may be omitted from the response set if the information is not available, ambiguous, unreliable, or not permitted to be shared.
+          example: "MULTI_LINE_CONTRACT"
+          type: string
+          enum: ["SINGLE_LINE_CONTRACT", "MULTI_LINE_CONTRACT"]
+    
+        lineToContractHolderAssociation:
+          description: |
+            Optional qualifier indicating whether the CSP can determine the association between the queried line and the contract holder.
+
+            If provided, populated with:
+            - `CONTRACT_HOLDER_ASSOCIATED` - the queried line is determined to be associated with the contract holder
+            - `NON_CONTRACT_HOLDER_ASSOCIATED` - the queried line is determined not to be associated with the contract holder
+
+            This attribute may be omitted from the response set if the relationship is not available, ambiguous, unreliable, or not permitted to be shared.
+          example: "CONTRACT_HOLDER_ASSOCIATED"
+          type: string
+          enum: ["CONTRACT_HOLDER_ASSOCIATED", "NON_CONTRACT_HOLDER_ASSOCIATED"]
+
       required:
         - tenureDateCheck
