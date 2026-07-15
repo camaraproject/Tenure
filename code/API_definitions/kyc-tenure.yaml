@@ -8,13 +8,17 @@ info:
 
     # API functionality
 
-    The API defines one service endpoint:
+    The API defines two service endpoints:
 
     - `POST /check-tenure`
 
       Takes the network subscription identifier (e.g. the mobile phone number for a mobile network subscriber) and the specified minimum tenure date to validate for the associated network subscription. This endpoint will respond with a confirmation of whether or not the network subscriber tenure is longer than the specified date timestamp, optionally supplemented with details of the subscription contract type.
 
-    To call this endpoint, the API consumer must first obtain a valid access token with the specified scope from the specified token endpoint, which is then passed to the endpoint via the `Authorization` header. For more details on access token processing, see below.
+    - `POST /retrieve-service-activation-band`
+
+      Returns a standardized `serviceActivationAgeBand` integer value indicating how long ago a service was activated, expressed as a fixed time band rather than an exact date. This operation is OPTIONAL. A provider that does not implement it returns `501 NOT_IMPLEMENTED`.
+
+    To call these endpoints, the API consumer must first obtain a valid access token with the specified scope from the specified token endpoint, which is then passed to the endpoint via the `Authorization` header. For more details on access token processing, see below.
 
     ## Inputs
 
@@ -107,6 +111,8 @@ servers:
 tags:
   - name: Check Subscriber Tenure
     description: Check details about the length of tenure of the subscriber
+  - name: Retrieve Service Activation Band
+    description: Retrieve a standardized recency band indicating how long ago the service was activated
 
 paths:
   /check-tenure:
@@ -143,7 +149,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/TenureInfo"
-
         "400":
           $ref: '../common/CAMARA_common.yaml#/components/responses/Generic400'
         "401":
@@ -154,6 +159,65 @@ paths:
           $ref: '../common/CAMARA_common.yaml#/components/responses/Generic404'
         "422":
           $ref: '../common/CAMARA_common.yaml#/components/responses/Generic422'
+
+  /retrieve-service-activation-band:
+    post:
+      tags:
+        - Retrieve Service Activation Band
+      summary: Retrieve service activation age band
+      description: |
+        Returns a standardized `serviceActivationAgeBand` integer value indicating how long
+        ago a service was activated, expressed as a fixed time band rather than an exact date.
+
+        This operation is an alternative for API providers that cannot expose a precise
+        `serviceActivationDate`. It does not return the actual activation date.
+
+        This operation is OPTIONAL. A provider that does not implement it returns
+        `501 NOT_IMPLEMENTED`; consumers can fall back to `check-tenure` or other operations.
+
+        The returned value is a technical network signal indicating recency; it is not a
+        customer-side risk score. Consuming parties apply their own decisioning outside
+        the API contract.
+
+        A provider exposing this operation MUST support the complete standardized band model;
+        partial support is not permitted, as it would create false interoperability.
+
+        Returns `422 SERVICE_NOT_APPLICABLE` if the identifier is valid but no band can be
+        determined. Transient backend failures MUST be returned as 5xx, never as `422`.
+      security:
+        - openId:
+            - kyc-tenure:retrieve-service-activation-band
+      operationId: retrieveServiceActivationBand
+      parameters:
+        - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServiceActivationBandRequest"
+      responses:
+        "200":
+          description: Service activation band returned successfully
+          headers:
+            x-correlator:
+              $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceActivationBandInfo"
+        "400":
+          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic400'
+        "401":
+          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic401'
+        "403":
+          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic403'
+        "404":
+          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic404'
+        "422":
+          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic422'
+        "501":
+          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic501'
 
 components:
   securitySchemes:
@@ -199,3 +263,51 @@ components:
           enum: ["PAYG", "PAYM", "Business"]
       required:
         - tenureDateCheck
+
+    ServiceActivationBandRequest:
+      description: Request body for retrieving service activation age band
+      type: object
+      properties:
+        phoneNumber:
+          $ref: "../common/CAMARA_common.yaml#/components/schemas/PhoneNumber"
+
+    ServiceActivationBandInfo:
+      type: object
+      description: Contains the standardized service activation age band for the identified subscription.
+      required:
+        - serviceActivationAgeBand
+      properties:
+        serviceActivationAgeBand:
+          type: integer
+          description: |
+            Standardized band indicating how long ago the service was activated.
+
+            `d` is the elapsed time between the activation event and the instant the request
+            is processed, both evaluated in UTC. `1y`, `2y`, `3y` are fixed as 365, 730, and
+            1095 days respectively — leap years are not applied — ensuring two providers assign
+            the same band to the same event.
+
+            Values `1`–`17` represent increasing recency bands (`1` = most recently activated,
+            `17` = oldest).
+
+            | Value | Meaning        |
+            |-------|----------------|
+            | 1     | 0h ≤ d < 4h    |
+            | 2     | 4h ≤ d < 12h   |
+            | 3     | 12h ≤ d < 1d   |
+            | 4     | 1d ≤ d < 2d    |
+            | 5     | 2d ≤ d < 3d    |
+            | 6     | 3d ≤ d < 4d    |
+            | 7     | 4d ≤ d < 5d    |
+            | 8     | 5d ≤ d < 7d    |
+            | 9     | 7d ≤ d < 14d   |
+            | 10    | 14d ≤ d < 30d  |
+            | 11    | 30d ≤ d < 60d  |
+            | 12    | 60d ≤ d < 90d  |
+            | 13    | 90d ≤ d < 180d |
+            | 14    | 180d ≤ d < 1y  |
+            | 15    | 1y ≤ d < 2y    |
+            | 16    | 2y ≤ d < 3y    |
+            | 17    | 3y+            |
+          enum: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]
+          example: 10
