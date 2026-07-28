@@ -179,7 +179,10 @@ components:
 
     TenureInfo:
       type: object
-      description: Defines tenure information provided in API response body
+      description: |
+        Defines tenure information provided in API response body.
+
+        Optional contract-line qualifiers, when provided, are intended only as contextual information for interpreting the tenure result. They do not identify or verify the actual user of the queried line or device, do not establish that the contract holder is the actual user, and must not be interpreted as standalone identity, trust, or eligibility assertions. Use of these qualifiers remains subject to the authorised purpose and applicable legal basis.
       properties:
         tenureDateCheck:
           description: |
