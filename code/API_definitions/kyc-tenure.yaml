@@ -212,7 +212,7 @@ components:
           example: "MULTI_LINE_CONTRACT"
           type: string
           enum: ["SINGLE_LINE_CONTRACT", "MULTI_LINE_CONTRACT"]
-    
+
         lineToContractHolderAssociation:
           description: |
             Optional qualifier indicating whether the CSP can determine the association between the queried line and the contract holder.
