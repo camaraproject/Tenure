@@ -1,0 +1,13 @@
+repository:
+  repository_name: Tenure
+  release_tag: r3.2
+  release_type: pre-release-rc
+  release_date: null
+  src_commit_sha: 91eea01c3cf00eaf960ba67c062efa526a402469
+apis:
+- api_name: kyc-tenure
+  api_version: 0.3.0-rc.1
+  api_title: KYC Tenure
+dependencies:
+  commonalities_release: r4.3 (0.8.0)
+  identity_consent_management_release: r4.2 (0.5.0)
