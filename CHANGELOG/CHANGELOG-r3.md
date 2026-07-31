@@ -70,11 +70,11 @@ Changes documented below are compared to version 0.2.0.
 
 ### Added
 
-* N/A
+* Management of an optional threshold for tenureDate by @GillesInnov35 in https://github.com/camaraproject/Tenure/pull/56
 
 ### Changed
 
-* N/A
+* Update API definition to fix validation warnings and hints by @eric-murray in https://github.com/camaraproject/Tenure/pull/75
 
 ### Fixed
 
@@ -82,7 +82,7 @@ Changes documented below are compared to version 0.2.0.
 
 ### Removed
 
-* N/A
+* Delete redundant API-Readiness-Checklist file by @eric-murray in https://github.com/camaraproject/Tenure/pull/78
 
 **Full Changelog**: https://github.com/camaraproject/Tenure/compare/r2.2...r3.2
 
