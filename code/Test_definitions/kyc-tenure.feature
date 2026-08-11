@@ -115,7 +115,7 @@ Feature: CAMARA Tenure API, vwip - Operation checkTenure
 
   @checkTenure_C02.01_phone_number_not_schema_compliant
   Scenario: Phone number value does not comply with the schema
-    Given the header "Authorization" is set to a valid access which does not identify a single phone number
+    Given the header "Authorization" is set to a valid access token which does not identify a single phone number
     And the request body property "$.phoneNumber" does not comply with the OAS schema at "/components/schemas/PhoneNumber"
     When the HTTP "POST" request is sent
     Then the response status code is 400
@@ -126,7 +126,7 @@ Feature: CAMARA Tenure API, vwip - Operation checkTenure
   # Typically with a 2-legged access token
   @checkTenure_C02.02_phone_number_not_found
   Scenario: Phone number not found
-    Given the header "Authorization" is set to a valid access which does not identify a single phone number
+    Given the header "Authorization" is set to a valid access token which does not identify a single phone number
     And the request body property "$.phoneNumber" is compliant with the schema but does not identify a valid subscription managed by the API provider
     When the HTTP "POST" request is sent
     Then the response status code is 404
@@ -136,7 +136,7 @@ Feature: CAMARA Tenure API, vwip - Operation checkTenure
 
   # Only with a 3-legged access token
   @checkTenure_C02.03_unnecessary_phone_number
-  Scenario: Phone number should not be included when it can be deducted from the access token
+  Scenario: Phone number should not be included when it can be inferred from the access token
     Given the header "Authorization" is set to a valid access token identifying a phone number
     And  the request body property "$.phoneNumber" is set to a valid phone number
     When the HTTP "POST" request is sent
@@ -146,8 +146,8 @@ Feature: CAMARA Tenure API, vwip - Operation checkTenure
     And the response property "$.message" contains a user friendly text
 
   @checkTenure_C02.04_missing_phone_number
-  Scenario: Phone number not included and cannot be deducted from the access token
-    Given the header "Authorization" is set to a valid access which does not identify a single phone number
+  Scenario: Phone number not included and cannot be inferred from the access token
+    Given the header "Authorization" is set to a valid access token which does not identify a single phone number
     And the request body property "$.phoneNumber" is not included
     When the HTTP "POST" request is sent
     Then the response status code is 422
@@ -158,7 +158,7 @@ Feature: CAMARA Tenure API, vwip - Operation checkTenure
   @checkTenure_C02.05_phone_number_not_supported
   Scenario: Service not available for the phone number
     Given that the service is not available for all phone numbers commercialized by the operator
-    And a valid phone number, identified by the token or provided in the request body, for which the service is not applicable
+    And a valid phone number, identified by the access token or provided in the request body, for which the service is not applicable
     When the HTTP "POST" request is sent
     Then the response status code is 422
     And the response property "$.status" is 422
