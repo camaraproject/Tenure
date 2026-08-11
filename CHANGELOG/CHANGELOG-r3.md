@@ -2,6 +2,7 @@
 
 <!-- TOC:START -->
 ## Table of Contents
+- [r3.2](#r32)
 - [r3.1](#r31)
 <!-- TOC:END -->
 
@@ -13,6 +14,50 @@ The below sections record the changes for each API version in each release as fo
 * for the first release-candidate, all changes since the last public release
 * for subsequent release-candidate(s), only the delta to the previous release-candidate
 * for a public release, the consolidated changes since the previous public release
+
+# r3.2
+
+## Release Notes
+
+This release candidate contains the definition and documentation of
+* kyc-tenure 0.3.0-rc.1
+
+The API definition(s) are based on
+* Commonalities 0.8.0
+* Identity and Consent Management 0.5.0
+
+## kyc-tenure 0.3.0-rc.1
+
+**kyc-tenure 0.3.0-rc.1 is a release-candidate version of this API.**
+
+Changes documented below are compared to version 0.2.0.
+
+- API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/Tenure/r3.2/code/API_definitions/kyc-tenure.yaml&nocors)
+  - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/Tenure/r3.2/code/API_definitions/kyc-tenure.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/Tenure/blob/r3.2/code/API_definitions/kyc-tenure.yaml)
+
+### Breaking changes
+
+* N/A
+
+### Added
+
+* Management of an optional threshold for tenureDate by @GillesInnov35 in https://github.com/camaraproject/Tenure/pull/56
+
+### Changed
+
+* Update API definition to fix validation warnings and hints by @eric-murray in https://github.com/camaraproject/Tenure/pull/75
+
+### Fixed
+
+* N/A
+
+### Removed
+
+* Delete redundant API-Readiness-Checklist file by @eric-murray in https://github.com/camaraproject/Tenure/pull/78
+
+**Full Changelog**: https://github.com/camaraproject/Tenure/compare/r2.2...r3.2
 
 # r3.1
 
