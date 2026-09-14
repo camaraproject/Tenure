@@ -65,8 +65,8 @@ Feature: CAMARA Tenure API, vwip - Operation checkTenure
     And the response property "$.message" contains a user friendly text
 
   @checkTenure_400.3_out_of_range
-  Scenario: Error when tenureDate is out of range
-    Given the request body property "$.tenureDate" is set to a value in the future
+  Scenario: Error when tenureDate is further back than the operator's tenure-verification threshold
+    Given the request body property "$.tenureDate" is set to a value that is further back than the telco operator's tenure-verification threshold
     When the HTTP "POST" request is sent
     Then the response status code is 400
     And the response property "$.status" is 400
