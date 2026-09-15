@@ -22,7 +22,7 @@ info:
     - `tenureDate`: The date from which continuous tenure of the identified network subscriber is required to be confirmed. This field is always required.
     - `phoneNumber`: The network subscription identifier (i.e. the phone number of the subscriber). This field is only required if no network subscription identifier is associated with the access token.
 
-    Note: MNOs may implement a threshold for the tenureDate aligned with their respective regulations. In that case if the tenureDate value in the request body is over the operator's threshold  an error `400 OUT_OF_RANGE `is returned with an explicit message to explain the limitation.
+    Note: MNOs may implement a threshold for the tenureDate aligned with their respective regulations. In that case if the tenureDate value in the request body is over the operator's threshold an error `400 OUT_OF_RANGE` is returned with an explicit message to explain the limitation.
 
     ## Outputs
 
@@ -124,7 +124,7 @@ paths:
       operationId: checkTenure
 
       parameters:
-        - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
+        - $ref: "./common/CAMARA_common.yaml#/components/parameters/x-correlator"
 
       requestBody:
         required: true
@@ -145,15 +145,15 @@ paths:
                 $ref: "#/components/schemas/TenureInfo"
 
         "400":
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic400'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/BadRequest400'
         "401":
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic401'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/Unauthenticated401'
         "403":
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic403'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/PermissionDenied403'
         "404":
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic404'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/NotFound404'
         "422":
-          $ref: '../common/CAMARA_common.yaml#/components/responses/Generic422'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/UnprocessableContent422'
 
 components:
   securitySchemes:
