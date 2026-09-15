@@ -33,7 +33,7 @@ dependencies:
 # - target_api_status: draft (no file yet) | alpha | rc | public
 apis:
   - api_name: kyc-tenure
-    target_api_version: 0.3.1
+    target_api_version: 0.3.0
     target_api_status: rc
     main_contacts:
       - eric-murray
