@@ -111,6 +111,17 @@ Feature: CAMARA Tenure API, vwip - Operation checkTenure
     And the response property "$.message" contains a user friendly text
     And the response property "$.status" is 401
 
+  # Generic 403 errors
+
+  @checkTenure_403.1_insufficient_scope
+  Scenario: Error response for insufficient scope in access token
+    Given the header "Authorization" is set to a valid access token that does not have the required scope
+    When the HTTP "POST" request is sent
+    Then the response status code is 403
+    And the response property "$.code" is "PERMISSION_DENIED"
+    And the response property "$.message" contains a user friendly text
+    And the response property "$.status" is 403
+
   # Error scenarios for management of input parameter phoneNumber
 
   @checkTenure_C02.01_phone_number_not_schema_compliant
