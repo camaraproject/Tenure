@@ -145,7 +145,7 @@ paths:
                 $ref: "#/components/schemas/TenureInfo"
 
         "400":
-          $ref: '../common/CAMARA_common.yaml#/components/responses/BadRequest400'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/BadRequestWithRange400'
         "401":
           $ref: '../common/CAMARA_common.yaml#/components/responses/Unauthenticated401'
         "403":
@@ -153,7 +153,7 @@ paths:
         "404":
           $ref: '../common/CAMARA_common.yaml#/components/responses/NotFound404'
         "422":
-          $ref: '../common/CAMARA_common.yaml#/components/responses/UnprocessableContent422'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/PhoneNumberIdentifier422'
 
 components:
   securitySchemes:
