@@ -120,9 +120,9 @@ Feature: CAMARA Tenure API, vwip - Operation checkTenure
     Then the response status code is 403
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 403
     And the response property "$.code" is "PERMISSION_DENIED"
     And the response property "$.message" contains a user friendly text
-    And the response property "$.status" is 403
 
   # Error scenarios for management of input parameter phoneNumber
 
