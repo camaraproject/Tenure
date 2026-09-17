@@ -113,7 +113,7 @@ Feature: CAMARA Tenure API, vwip - Operation checkTenure
 
   # Generic 403 errors
 
-  @checkTenure_403.1_insufficient_scope
+  @checkTenure_403.1_missing_access_token_scope
   Scenario: Error response for insufficient scope in access token
     Given the header "Authorization" is set to a valid access token that does not have the required scope "kyc-tenure:check-tenure"
     When the HTTP "POST" request is sent
