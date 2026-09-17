@@ -151,7 +151,7 @@ paths:
         "403":
           $ref: '../common/CAMARA_common.yaml#/components/responses/PermissionDenied403'
         "404":
-          $ref: '../common/CAMARA_common.yaml#/components/responses/NotFound404'
+          $ref: '../common/CAMARA_common.yaml#/components/responses/IdentifierNotFound404'
         "422":
           $ref: '../common/CAMARA_common.yaml#/components/responses/PhoneNumberIdentifier422'
 
