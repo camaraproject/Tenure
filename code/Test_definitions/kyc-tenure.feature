@@ -23,7 +23,7 @@ Feature: CAMARA Tenure API, vwip - Operation checkTenure
     Given a valid testing phone number supported by the service, identified by the access token or provided in the request body
     And the request body property "$.tenureDate" is set to a valid past date in format RFC 3339 / ISO 8601
     And the mobile subscription has had a valid tenure since the provided tenure date
-    When the HTTP "POST" request is sent
+    When the request "checkTenure" is sent
     Then the response status code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
@@ -36,7 +36,7 @@ Feature: CAMARA Tenure API, vwip - Operation checkTenure
     Given a valid testing phone number supported by the service, identified by the access token or provided in the request body
     And the request body property "$.tenureDate" is set to a valid past date in format RFC 3339 / ISO 8601
     And the mobile subscription hasn't had a valid tenure since the provided tenure date
-    When the HTTP "POST" request is sent
+    When the request "checkTenure" is sent
     Then the response status code is 200
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
@@ -46,77 +46,91 @@ Feature: CAMARA Tenure API, vwip - Operation checkTenure
 
   # Generic 400 errors
 
-  @checkTenure_400.1_no_request_body
+  @checkTenure_400.01_schema_not_compliant
+  Scenario: Invalid Argument. Generic Syntax Exception
+    Given the request body is included but is not compliant with the schema at "#/components/schemas/Tenure"
+    When the request "checkTenure" is sent
+    Then the response status code is 400
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
+
+  @checkTenure_400.02_no_request_body
   Scenario: Missing request body
     Given the request body is not included
-    When the HTTP "POST" request is sent
+    When the request "checkTenure" is sent
     Then the response status code is 400
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @checkTenure_400.2_empty_request_body
+  @checkTenure_400.03_empty_request_body
   Scenario: Empty object as request body
-    Given the request body is set to "{}"
-    When the HTTP "POST" request is sent
+    Given the request body is set to {}
+    When the request "checkTenure" is sent
     Then the response status code is 400
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-  @checkTenure_400.3_out_of_range
+  @checkTenure_400.04_out_of_range
   Scenario: Error when tenureDate is further back than the operator's tenure-verification threshold
     Given the request body property "$.tenureDate" is set to a value that is further back than the telco operator's tenure-verification threshold
-    When the HTTP "POST" request is sent
+    When the request "checkTenure" is sent
     Then the response status code is 400
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
     And the response property "$.status" is 400
     And the response property "$.code" is "OUT_OF_RANGE"
     And the response property "$.message" contains a user friendly text
 
-  @checkTenure_400.4_invalid_argument
-  Scenario: Invalid Argument. Generic Syntax Exception
-    Given the request body is set to any value which is not compliant with the OAS schema at "/components/schemas/TenureDate"
-    When the HTTP "POST" request is sent
-    Then the response status code is 400
-    And the response property "$.status" is 400
-    And the response property "$.code" is "INVALID_ARGUMENT"
-    And the response property "$.message" contains a user friendly text
-
   # Generic 401 errors
 
-  @checkTenure_401.1_expired_access_token
-  Scenario: Error response for expired access token
-    Given the header "Authorization" is set to an expired access token
-    When the HTTP "POST" request is sent
-    Then the response status code is 401
-    And the response property "$.code" is "UNAUTHENTICATED"
-    And the response property "$.message" contains a user friendly text
-    And the response property "$.status" is 401
-
-  @checkTenure_401.2_invalid_access_token
-  Scenario: Error response for invalid access token
-    Given the header "Authorization" is set to an invalid access token which is invalid for reasons other than lifetime expiry
-    When the HTTP "POST" request is sent
-    Then the response status code is 401
-    And the response property "$.code" is "UNAUTHENTICATED"
-    And the response property "$.message" contains a user friendly text
-    And the response property "$.status" is 401
-
-  @checkTenure_401.3_no_header_authorization
+  @checkTenure_401.01_no_authorization_header
   Scenario: Error response for no header "Authorization"
     Given the header "Authorization" is not sent
-    When the HTTP "POST" request is sent
+    When the request "checkTenure" is sent
     Then the response status code is 401
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 401
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
+
+  @checkTenure_401.02_expired_access_token
+  Scenario: Error response for expired access token
+    Given the header "Authorization" is set to an expired access token
+    When the request "checkTenure" is sent
+    Then the response status code is 401
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
     And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains a user friendly text
+
+  @checkTenure_401.03_invalid_access_token
+  Scenario: Error response for invalid access token
+    Given the header "Authorization" is set to an invalid access token
+    When the request "checkTenure" is sent
+    Then the response status code is 401
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" contains a user friendly text
 
   # Generic 403 errors
 
-  @checkTenure_403.1_missing_access_token_scope
+  @checkTenure_403.01_missing_access_token_scope
   Scenario: Missing access token scope
-    Given the header "Authorization" is set to a valid access token that does not include scope "kyc-tenure:check-tenure"
-    When the HTTP "POST" request is sent
+    Given the header "Authorization" is set to an access token that does not include scope "kyc-tenure:check-tenure"
+    When the request "checkTenure" is sent
     Then the response status code is 403
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
@@ -124,13 +138,25 @@ Feature: CAMARA Tenure API, vwip - Operation checkTenure
     And the response property "$.code" is "PERMISSION_DENIED"
     And the response property "$.message" contains a user friendly text
 
+  # Generic 429 errors
+
+  @checkTenure_429.01_too_many_requests
+  Scenario: Request is rejected due to threshold policy
+    Given the header "Authorization" is set to a valid access token
+    And the threshold of requests has been reached
+    When the request "checkTenure" is sent
+    Then the response status code is 429
+    And the response property "$.status" is 429
+    And the response property "$.code" is "TOO_MANY_REQUESTS"
+    And the response property "$.message" contains a user friendly text
+
   # Error scenarios for management of input parameter phoneNumber
 
   @checkTenure_C02.01_phone_number_not_schema_compliant
   Scenario: Phone number value does not comply with the schema
     Given the header "Authorization" is set to a valid access token which does not identify a single phone number
-    And the request body property "$.phoneNumber" does not comply with the OAS schema at "/components/schemas/PhoneNumber"
-    When the HTTP "POST" request is sent
+    And the request body property "$.phoneNumber" does not comply with the OAS schema at "#/components/schemas/PhoneNumber"
+    When the request "checkTenure" is sent
     Then the response status code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
@@ -140,8 +166,8 @@ Feature: CAMARA Tenure API, vwip - Operation checkTenure
   @checkTenure_C02.02_phone_number_not_found
   Scenario: Phone number not found
     Given the header "Authorization" is set to a valid access token which does not identify a single phone number
-    And the request body property "$.phoneNumber" is compliant with the schema but does not identify a valid subscription managed by the API provider
-    When the HTTP "POST" request is sent
+    And the request body property "$.phoneNumber" is compliant with the schema but does not identify a valid phone number
+    When the request "checkTenure" is sent
     Then the response status code is 404
     And the response property "$.status" is 404
     And the response property "$.code" is "IDENTIFIER_NOT_FOUND"
@@ -149,20 +175,20 @@ Feature: CAMARA Tenure API, vwip - Operation checkTenure
 
   # Only with a 3-legged access token
   @checkTenure_C02.03_unnecessary_phone_number
-  Scenario: Phone number should not be included when it can be deduced from the access token
+  Scenario: Phone number not to be included when it can be deduced from the access token
     Given the header "Authorization" is set to a valid access token identifying a phone number
     And  the request body property "$.phoneNumber" is set to a valid phone number
-    When the HTTP "POST" request is sent
+    When the request "checkTenure" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
     And the response property "$.code" is "UNNECESSARY_IDENTIFIER"
     And the response property "$.message" contains a user friendly text
 
   @checkTenure_C02.04_missing_phone_number
-  Scenario: Phone number not included and cannot be deducted from the access token
+  Scenario: Phone number not included and cannot be deduced from the access token
     Given the header "Authorization" is set to a valid access token which does not identify a single phone number
     And the request body property "$.phoneNumber" is not included
-    When the HTTP "POST" request is sent
+    When the request "checkTenure" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
     And the response property "$.code" is "MISSING_IDENTIFIER"
@@ -172,7 +198,7 @@ Feature: CAMARA Tenure API, vwip - Operation checkTenure
   Scenario: Service not available for the phone number
     Given that the service is not available for all phone numbers commercialized by the operator
     And a valid phone number, identified by the access token or provided in the request body, for which the service is not applicable
-    When the HTTP "POST" request is sent
+    When the request "checkTenure" is sent
     Then the response status code is 422
     And the response property "$.status" is 422
     And the response property "$.code" is "SERVICE_NOT_APPLICABLE"
