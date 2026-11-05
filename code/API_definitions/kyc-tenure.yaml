@@ -6,6 +6,8 @@ info:
 
     The CAMARA Know Your Customer (KYC) Tenure API allows for verification that a network subscriber has been a customer of the Communications Service Provider (CSP) for a specified minimum length of time so as to establish a level of trust for the associated network subscription identifier.
 
+    In this API, "tenure" is the length of time during which the network subscription identifier (e.g. the phone number) has been continuously active with the CSP, counted from its activation date up to the present day. It refers to the subscription identifier and not to the overall customer account. The `tenureDate` provided in the request is the date from which this continuous tenure is to be confirmed.
+
     # API functionality
 
     The API defines one service endpoint:
@@ -22,7 +24,32 @@ info:
     - `tenureDate`: The date from which continuous tenure of the identified network subscriber is required to be confirmed. This field is always required.
     - `phoneNumber`: The network subscription identifier (i.e. the phone number of the subscriber). This field is only required if no network subscription identifier is associated with the access token.
 
-    Note: MNOs may implement a threshold for the tenureDate aligned with their respective regulations. In that case if the tenureDate value in the request body is over the operator's threshold an error `400 OUT_OF_RANGE` is returned with an explicit message to explain the limitation.
+    ### Regulatory threshold date and `OUT_OF_RANGE`
+
+    A CSP may apply a regulatory threshold date (R) to the `tenureDate`, aligned with its applicable regulations (for example, "today minus 5 years"). No tenure information can be provided for dates earlier than this threshold. The threshold is defined by the CSP and is not part of the API request. In the following, `tenureDate` (D), the subscription start date (S) and the current date (T) are compared with R:
+
+    | Condition | Result |
+    |-----------|--------|
+    | D < R | `400 OUT_OF_RANGE` error |
+    | D > T | `400 OUT_OF_RANGE` error (the `tenureDate` is in the future) |
+    | R <= D <= T and R < S <= D | `200` with `tenureDateCheck: true` (subscribed before the requested date) |
+    | R <= D <= T and R <= D < S | `200` with `tenureDateCheck: false` (subscribed after the requested date) |
+    | R <= D <= T and S < R | `200` with `tenureDateCheck: true` (the subscription started before the threshold, so tenure covers any date from R onwards) |
+
+    Example, with a CSP threshold of `2021-01-01`:
+    - `tenureDate` `2020-06-01` is before the threshold: a `400 OUT_OF_RANGE` error is returned with an explicit message explaining the limitation.
+    - If today is `2026-10-21`, `tenureDate` `2027-01-01` is in the future: a `400 OUT_OF_RANGE` error is returned.
+    - Subscriber with subscription start date `2023-01-01`: `tenureDate` `2024-01-01` returns `tenureDateCheck: true`, while `tenureDate` `2022-01-01` returns `tenureDateCheck: false`.
+    - Subscriber with subscription start date `2016-01-01` (before the threshold): any `tenureDate` between `2021-01-01` and today returns `tenureDateCheck: true`; `false` is never returned for this subscriber.
+
+    An example of an `OUT_OF_RANGE` error response is as follows:
+    ```
+    {
+        "status": 400,
+        "code": "OUT_OF_RANGE",
+        "message": "The provided tenureDate is earlier than the earliest date for which this CSP can verify tenure."
+    }
+    ```
 
     ## Outputs
 
@@ -63,6 +90,7 @@ info:
     - If the subject can be identified from the access token and the optional `phoneNumber` field is also included in the request, then the server will return an error with the `422 UNNECESSARY_IDENTIFIER` error code. This will be the case even if the same phone number is identified by these two methods, as the server is unable to make this comparison.
 
     <!-- CAMARA:MANDATORY:additional-error-responses:BEGIN -->
+
     # Additional CAMARA error responses
 
     The list of error codes in this API specification is not exhaustive. Therefore the API specification MAY not document some non-mandatory error statuses as indicated in `CAMARA API Design Guide`.
@@ -73,6 +101,7 @@ info:
     <!-- CAMARA:MANDATORY:additional-error-responses:END -->
 
     <!-- CAMARA:MANDATORY:authorization-and-authentication:BEGIN -->
+
     # Authorization and authentication
 
     The "Camara Security and Interoperability Profile" provides details of how an API consumer requests an access token. Please refer to Identity and Consent Management (https://github.com/camaraproject/IdentityAndConsentManagement/) for the released version of the profile.
@@ -83,6 +112,7 @@ info:
     <!-- CAMARA:MANDATORY:authorization-and-authentication:END -->
 
     <!-- CAMARA:MANDATORY:request-body-strictness:BEGIN -->
+
     # Request body strictness
 
     This API rejects requests with JSON request bodies that contain properties not declared in this specification, at any nesting level. Unknown properties result in a `400 INVALID_ARGUMENT` response.

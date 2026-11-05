@@ -44,6 +44,30 @@ Feature: CAMARA Tenure API, vwip - Operation checkTenure
     And the response property "$.tenureDateCheck" is false
     And if the response contains property "$.contractType", the value is one of ["PAYG", "PAYM", "Business"]
 
+  @checkTenure_3_tenure_check_false_subscription_after_tenure_date
+  Scenario: Validate successful response when tenureDate is within the threshold but earlier than the subscription start date
+    Given a valid testing phone number supported by the service, identified by the access token or provided in the request body
+    And the request body property "$.tenureDate" is set to a valid past date that is not further back than the telco operator's tenure-verification threshold
+    And the mobile subscription started after the provided tenure date
+    When the request "checkTenure" is sent
+    Then the response status code is 200
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response body complies with the OAS schema at "/components/schemas/TenureInfo"
+    And the response property "$.tenureDateCheck" is false
+
+  @checkTenure_4_tenure_check_true_subscription_before_threshold
+  Scenario: Validate successful response when the subscription started before the operator's tenure-verification threshold
+    Given a valid testing phone number supported by the service, identified by the access token or provided in the request body
+    And the mobile subscription started before the telco operator's tenure-verification threshold
+    And the request body property "$.tenureDate" is set to a valid past date that is not further back than the telco operator's tenure-verification threshold
+    When the request "checkTenure" is sent
+    Then the response status code is 200
+    And the response header "Content-Type" is "application/json"
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response body complies with the OAS schema at "/components/schemas/TenureInfo"
+    And the response property "$.tenureDateCheck" is true
+
   # Generic 400 errors
 
   @checkTenure_400.01_schema_not_compliant
@@ -82,6 +106,17 @@ Feature: CAMARA Tenure API, vwip - Operation checkTenure
   @checkTenure_400.04_out_of_range
   Scenario: Error when tenureDate is further back than the operator's tenure-verification threshold
     Given the request body property "$.tenureDate" is set to a value that is further back than the telco operator's tenure-verification threshold
+    When the request "checkTenure" is sent
+    Then the response status code is 400
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response property "$.status" is 400
+    And the response property "$.code" is "OUT_OF_RANGE"
+    And the response property "$.message" contains a user friendly text
+
+  @checkTenure_400.05_out_of_range_future_date
+  Scenario: Error when tenureDate is in the future
+    Given the request body property "$.tenureDate" is set to a date in the future
     When the request "checkTenure" is sent
     Then the response status code is 400
     And the response header "x-correlator" has same value as the request header "x-correlator"
