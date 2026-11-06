@@ -2,6 +2,7 @@
 
 <!-- TOC:START -->
 ## Table of Contents
+- **[r3.4](#r34)**
 - [r3.3](#r33)
 - [r3.2](#r32)
 - [r3.1](#r31)
@@ -15,6 +16,77 @@ The below sections record the changes for each API version in each release as fo
 * for the first release-candidate, all changes since the last public release
 * for subsequent release-candidate(s), only the delta to the previous release-candidate
 * for a public release, the consolidated changes since the previous public release
+
+# r3.4
+
+## Release Notes
+
+This public release contains the definition and documentation of
+* kyc-tenure 0.3.0
+
+The API definition(s) are based on
+* Commonalities r4.4 (0.9.0)
+* Identity and Consent Management r4.2 (0.5.0)
+
+## kyc-tenure 0.3.0
+
+**kyc-tenure 0.3.0 is an initial public version of this API.**
+
+Changes documented below are compared to version 0.2.0.
+
+- API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/Tenure/r3.4/code/API_definitions/kyc-tenure.yaml&nocors)
+  - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/Tenure/r3.4/code/API_definitions/kyc-tenure.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/Tenure/blob/r3.4/code/API_definitions/kyc-tenure.yaml)
+
+### Breaking changes
+
+* New error response code `429 TOO_MANY_REQUESTS` added in https://github.com/camaraproject/Tenure/pull/99
+* Error response code `400 OUT_OF_RANGE` will now be returned when the requested tenure date precedes the regulatory threshold date in https://github.com/camaraproject/Tenure/pull/108
+
+### Added
+
+* Management of an optional threshold for tenureDate by @GillesInnov35 in https://github.com/camaraproject/Tenure/pull/56
+* Test definitions:
+  * `@checkTenure_403.1_missing_access_token_scope` for `403 PERMISSION_DENIED` in https://github.com/camaraproject/Tenure/pull/98
+  * `@checkTenure_429.01_too_many_requests` for `429 TOO_MANY_REQUESTS` in https://github.com/camaraproject/Tenure/pull/99
+  * `@checkTenure_3_tenure_check_false_subscription_after_tenure_date` in https://github.com/camaraproject/Tenure/pull/108
+  * `@checkTenure_4_tenure_check_true_subscription_before_threshold` in https://github.com/camaraproject/Tenure/pull/108
+  * `@checkTenure_400.05_out_of_range_future_date` for `400 OUT_OF_RANGE` in https://github.com/camaraproject/Tenure/pull/108
+
+### Changed
+
+* Update scenario description for tenureDate validation by @GillesInnov35 in https://github.com/camaraproject/Tenure/pull/97
+  * Updated test scenario `@checkTenure_400.3_out_of_range`
+* Fix release r3.2 issues (#90 & #92) by @albertoramosmonagas in https://github.com/camaraproject/Tenure/pull/98
+  * API specification:
+    * Editorial correction (not affecting functionality)
+  * Test definitions:
+    * Fix several typos in .feature scenarios (wording alignment)
+* Align kyc-tenure to Commonalities r4.4 by @albertoramosmonagas in https://github.com/camaraproject/Tenure/pull/99
+  * API specification:
+    * Harmonised transversal sections in `info.description`
+    * Update error response references from deprecated Generic* to new referenceable responses (BadRequest400, Unauthenticated401, PermissionDenied403, NotFound404, UnprocessableContent422)(no change to the returned status codes or error codes)
+  * Test definitions:
+    * Wording aligment in several tests scenarios with Commonalities r4.4 testing guidelines and artifacts
+* Clarify tenure and OUT_OF_RANGE in API description and tests (#107, #109, #110, #111) by @albertoramosmonagas in https://github.com/camaraproject/Tenure/pull/108
+* info.description:
+  - adds a definition of "tenure" at the beginning;
+  - documents the CSP regulatory threshold for tenureDate, with an outcome table, worked examples and an example 400 OUT_OF_RANGE response;
+  - documents a future tenureDate (D > T) as 400 OUT_OF_RANGE
+  - replaces "MNO" with "CSP", the term used in the API
+  - adds a blank line after each mandatory BEGIN marker so Swagger tools render the following heading correctly
+* Update API definition to fix validation warnings and hints by @eric-murray in https://github.com/camaraproject/Tenure/pull/75
+
+### Fixed
+
+* N/A
+
+### Removed
+
+* N/A
+
+**Full Changelog**: https://github.com/camaraproject/Tenure/compare/r2.2...r3.4
 
 # r3.3
 
