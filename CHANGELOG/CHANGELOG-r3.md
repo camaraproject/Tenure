@@ -2,6 +2,7 @@
 
 <!-- TOC:START -->
 ## Table of Contents
+- [r3.3](#r33)
 - [r3.2](#r32)
 - [r3.1](#r31)
 <!-- TOC:END -->
@@ -14,6 +15,65 @@ The below sections record the changes for each API version in each release as fo
 * for the first release-candidate, all changes since the last public release
 * for subsequent release-candidate(s), only the delta to the previous release-candidate
 * for a public release, the consolidated changes since the previous public release
+
+# r3.3
+
+## Release Notes
+
+This release candidate contains the definition and documentation of
+* kyc-tenure 0.3.0-rc.2
+
+The API definition(s) are based on
+* Commonalities r4.4 (0.9.0)
+* Identity and Consent Management r4.2 (0.5.0)
+
+## kyc-tenure 0.3.0-rc.2
+
+**kyc-tenure 0.3.0-rc.2 is a release-candidate version of this API.**
+
+Changes documented below are compared to version 0.3.0-rc.1.
+
+- API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/Tenure/r3.3/code/API_definitions/kyc-tenure.yaml&nocors)
+  - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/Tenure/r3.3/code/API_definitions/kyc-tenure.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/Tenure/blob/r3.3/code/API_definitions/kyc-tenure.yaml)
+
+### Breaking changes
+
+* N/A
+
+### Added
+
+* N/A
+
+### Changed
+
+* Update scenario description for tenureDate validation by @GillesInnov35 in https://github.com/camaraproject/Tenure/pull/97
+  * Updated test scenario `@checkTenure_400.3_out_of_range`
+* Fix release r3.2 issues (#90 & #92) by @albertoramosmonagas in https://github.com/camaraproject/Tenure/pull/98
+  * API specification:
+    * Editorial correction (not affecting functionality)
+  * Test definitions:
+    * Added missing test scenario `@checkTenure_403.1_missing_access_token_scope` for `PERMISSION_DENIED`
+    * Fix several typos in .feature scenarios (wording alignment)
+* Align kyc-tenure to Commonalities r4.4 by @albertoramosmonagas in https://github.com/camaraproject/Tenure/pull/99
+  * API specification:
+    * Harmonised transversal sections in `info.description`
+    * Update error response references from deprecated Generic* to new referenceable responses (BadRequest400, Unauthenticated401, PermissionDenied403, NotFound404, UnprocessableContent422)(no change to the returned status codes or error codes)
+  * Test definitions:
+    * Added missing test scenario `checkTenure_429.01_too_many_requests` for `TOO_MANY_REQUESTS`
+    * Wording aligment in several tests scenarios with Commonalities r4.4 testing guidelines and artifacts
+* Clarify tenure and OUT_OF_RANGE in API description and tests (#107, #109, #110, #111) by @albertoramosmonagas in https://github.com/camaraproject/Tenure/pull/108
+
+### Fixed
+
+* N/A
+
+### Removed
+
+* N/A
+
+**Full Changelog**: https://github.com/camaraproject/Tenure/compare/r3.2...r3.3
 
 # r3.2
 
