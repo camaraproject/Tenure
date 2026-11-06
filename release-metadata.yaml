@@ -2,7 +2,7 @@ repository:
   repository_name: Tenure
   release_tag: r3.4
   release_type: public-release
-  release_date: null
+  release_date: '2026-11-06T15:24:09Z'
   src_commit_sha: 56d4ad8e7d2fc66a247dac8682aa910f33df7fd4
 apis:
 - api_name: kyc-tenure
